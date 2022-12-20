@@ -2,14 +2,16 @@
 - [minicondani](https://docs.conda.io/en/latest/miniconda.html) o'rnating
 - Repo boshidan (root) quyidagilarni qiling:
     ```shell
-    conda env create -f environment.yml
-    conda activate neo-mutational-library
+    conda install -c conda-forge mamba
+    mamba env create -f environment.yml
+    conda activate cradle_hr
+    pip install -U insightface
     pip install -e .
     pre-commit install
     ```
 
 ### Repo strukturasi
-.. code-block:: none
+Quyidagicha
 
     ├── .gitignore
     ├── README.md
@@ -27,14 +29,14 @@
     └── data
 
 
-## PR ochish qoidasi
-Biz main branchda ishlamaymiz. Hamma o'zi ishlaydigan branchni ochadi.
+### PR ochish qoidasi
+- Biz main branchda ishlamaymiz. Hamma o'zi ishlaydigan branchni ochadi.
 Branch nomi proyektga mos bo'lishi kerak.
-Masalan, bu yerda qilyotgan topshiriqlarimiz bor:
-`https://github.com/orgs/cradle-uz/projects/1`
+Masalan, bu yerda: [link](https://github.com/orgs/cradle-uz/projects/2/views/1?layout=board)
 
-Men `ai-#1` topshiriqni olganman, shuning uchun quyidagicha branch ochaman:
+- `hr-#1 repo strukturalash` topshiriq bo'lsa, quyidagicha branch qilinadi:
 
-```shell
-git checkout -b "ai-1-repo-strukturalash"
-```
+  ```shell
+  git checkout -b "hr-1-repo-strukturalash"
+  ```
+- PR qilgan kishi albatta o'sha PRni tugatishga masul.
