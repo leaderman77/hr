@@ -1,12 +1,13 @@
-name: cradle-hr
+name: cradle_hr
 channels:
   - anaconda
   - conda-forge
   - defaults
 dependencies:
-  - opencv-python
   - pre-commit
   - pytest
   - python=3.9
   - pandas==1.4.1
-  - pip
+  - opencv
+  - pip:
+    - onnxruntime
