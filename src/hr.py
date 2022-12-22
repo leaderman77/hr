@@ -1,6 +1,6 @@
 class HR:
-    def __int__(self):
-        pass
+    def __init__(self):
+        print("HR classga bo'glandi!")
 
     def detection(self):
         print("detection f-ya")
@@ -8,8 +8,8 @@ class HR:
     def agegender(self):
         print("age-gender f-ya")
 
-    def recognation(self):
-        print("recognation f-ya")
+    def recognition(self):
+        print("recognition f-ya")
 
 # myHR = HR()
 # myHR.detection()
