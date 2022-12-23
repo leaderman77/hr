@@ -7,7 +7,8 @@ dependencies:
   - pre-commit
   - pytest
   - python=3.9
-  - pandas==1.4.1
-  - opencv
+  - pandas
   - pip:
-    - onnxruntime
+      - opencv-python
+      - onnxruntime
+      - insightface==0.7.2
