@@ -1,4 +1,7 @@
-from src.hr import HR
+# from src.hr import HR
+import src.hr as hr
 
-myHR = HR()
+myHR = hr.HR()
+
+# myHR = HR()
 myHR.detection()
