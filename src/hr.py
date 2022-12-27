@@ -1,4 +1,4 @@
-# import cv2
+import cv2
 from insightface.app import FaceAnalysis
 
 
@@ -11,17 +11,30 @@ class HR:
         pass
 
     def detection(self, img):
-        print("detection f-ya")
         faces = app.get(img)
+        all_detect_facees = []
         for face in faces:
             print(face.bbox)
+            print(face.kps)
+            x1 = int(face["bbox"][0])
+            y1 = int(face["bbox"][1])
+            x2 = int(face["bbox"][2])
+            y2 = int(face["bbox"][3])
+            crop_img = img[y1:y2, x1:x2]
+            print(crop_img.shape)
+            # test papka yaratib osha joyga detection bogan rasmlarni saqlaymiz
+            # cv2.imwrite("detect.jpg",crop_img)
+
             # rasm koordinatalari shu yerda yuboriladi
+            all_detect_facees.append([face.bbox, face.kps, crop_img.shape])
+
+        return all_detect_facees
 
     def agegender(self):
         print("age-gender f-ya")
 
-    def recognation(self):
-        print("recognation f-ya")
+    def embeding(self):
+        print("embeding f-ya")
 
 
 # myHR = HR()
