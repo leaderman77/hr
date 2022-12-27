@@ -5,7 +5,6 @@
     conda install -c conda-forge mamba
     mamba env create -f environment.yml
     conda activate cradle_hr
-    pip install -U insightface
     pip install -e .
     pre-commit install
     ```
