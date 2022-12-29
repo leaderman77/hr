@@ -23,11 +23,19 @@ class HR:
             y2 = int(face["bbox"][3])
             crop_img = img[y1:y2, x1:x2]
             print(crop_img.shape)
+            # test uchin ishlatildi
+            cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
 
-            # rasm koordinatalari shu yerda aniqlanadi
+            # rasm koordinatalari shu yerda yuboriladi
             all_detect_faces.append([face.bbox, face.kps, crop_img.shape])
 
-        return all_detect_faces
+        # test qilish uchun ishlatildi
+        full_filename = os.path.join(
+            "../tests/detection/", "test-det_score-0,3-" + str(uuid.uuid4()) + ".jpg"
+        )
+        cv2.imwrite(full_filename, img)
+
+        return all_detect_facees
 
     def agegender(self):
         print("age-gender f-ya")
@@ -36,6 +44,10 @@ class HR:
         print("embeding f-ya")
 
 
-# myHR = HR()
+_path = "../data/drive/rasmlar_chiqish/1_1_1_2022-10-09-17-38-10.jpg"
+img = cv2.imread(_path)
+myHR = HR()
+faces = myHR.detection(img)
+
 # myHR.agegender()
 # myHR.recognation()
