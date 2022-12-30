@@ -1,5 +1,5 @@
 from sympy import dirichlet_eta
-
+import json
 from src.hr import HR
 import cv2
 
@@ -28,17 +28,50 @@ def det():
     img = cv2.imread(_path)
     myHR = HR()
     faces = myHR.detection(img)
-    for face in faces:
-        bbox, kps, _shape = face
+    det_result = {}
+    print(type(faces))
+    for i in range(len(faces)):
+        bbox, kps, _shape = faces[i]
         x1 = int(bbox[0])
         y1 = int(bbox[1])
         x2 = int(bbox[2])
         y2 = int(bbox[3])
-        print(bbox)
-        print(kps)
-        print(_shape)
 
-    # return json.data([...])
+        # bbox
+        b_box = {}
+        b_box["x1"] = x1
+        b_box["y1"] = y1
+        b_box["x2"] = x2
+        b_box["y2"] = y2
+
+        # kps
+        b_kps = {}
+        b_kps["right_eye"] = (float(kps[0][0]), float(kps[0][1]))
+        b_kps["left_eye"] = (float(kps[1][0]), float(kps[1][1]))
+        b_kps["nose"] = (float(kps[2][0]), float(kps[2][1]))
+        b_kps["right_lip"] = (float(kps[3][0]), float(kps[3][1]))
+        b_kps["left_eye"] = (float(kps[4][0]), float(kps[4][1]))
+
+        # shape
+        b_shape = {}
+        b_shape["h"] = _shape[0]
+        b_shape["w"] = _shape[1]
+        b_shape["c"] = _shape[2]
+
+        # har bir topilgan yuz uchun
+        obj = {}
+        obj["bbox"] = b_box
+        obj["kps"] = b_kps
+        obj["shape"] = b_shape
+
+        det_result["p" + str(i)] = obj
+
+    print(det_result)
+    print(type(det_result))
+    det_json = json.dumps(det_result)
+    print(det_json)
+    print(type(det_json))
+    # det_json API orqali jo'natiladi
 
 
 det()
