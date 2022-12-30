@@ -7,7 +7,7 @@ import uuid
 
 def det():
     hr = HR()
-    imgs_path = "../../data/drive/rasmlar_kirish/*.jpg"
+    imgs_path = "../data/drive/rasmlar_chiqish/1_1_1_2022-10-09-17-38-10.jpg"
 
     for img_path in glob.glob(imgs_path):
         img = cv2.imread(img_path)
@@ -21,8 +21,7 @@ def det():
             y2 = int(bbox[3])
             # draw bbox
             cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
-            # draw kps
-            # please put here
+
         filename = os.path.join("", "test-det_score-" + str(uuid.uuid4()) + ".jpg")
         print(filename)
         cv2.imwrite(filename, img)

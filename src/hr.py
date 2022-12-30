@@ -2,7 +2,6 @@
 from insightface.app import FaceAnalysis
 
 
-
 class HR:
     def __init__(self, module="detection", det_size=(640, 640), det_thresh=0.3):
         self.app = FaceAnalysis(allowed_modules=[module])
@@ -30,6 +29,6 @@ class HR:
         print("embeding f-ya")
 
 
-myHR = HR()
+# myHR = HR()
 # myHR.agegender()
 # myHR.recognation()
