@@ -1,3 +1,9 @@
+"""
+Yuzni aniqlashni test qilish
+    - berilgan path bo'yicha .jpg rasmlarni load qiladi
+    - har bir rasmni HR classidagi detection f-ya yordamida barcha yuzlarni aniqlaydi( f-yaga bazi parametrlarni berish mumkin, masalan: module, det_size va det_thresh)
+    - topilgan har bir yuz uchun yuz atrofida to'rtburchak chiziladi
+"""
 import cv2
 from src.hr import HR
 import glob
@@ -22,9 +28,9 @@ def det():
             # draw bbox
             cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
 
-        filename = os.path.join("", "test-det_score-" + str(uuid.uuid4()) + ".jpg")
-        print(filename)
-        cv2.imwrite(filename, img)
+        # filename = os.path.join("", "test-det_score-" + str(uuid.uuid4()) + ".jpg")
+        # print(filename)
+        # cv2.imwrite(filename, img)
 
 
 det()

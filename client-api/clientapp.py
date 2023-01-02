@@ -1,4 +1,3 @@
-from sympy import dirichlet_eta
 import json
 from src.hr import HR
 import cv2
@@ -46,11 +45,11 @@ def det():
 
         # kps
         b_kps = {}
-        b_kps["right_eye"] = (float(kps[0][0]), float(kps[0][1]))
-        b_kps["left_eye"] = (float(kps[1][0]), float(kps[1][1]))
-        b_kps["nose"] = (float(kps[2][0]), float(kps[2][1]))
-        b_kps["right_lip"] = (float(kps[3][0]), float(kps[3][1]))
-        b_kps["left_eye"] = (float(kps[4][0]), float(kps[4][1]))
+        b_kps["right_eye"] = (int(kps[0][0]), int(kps[0][1]))
+        b_kps["left_eye"] = (int(kps[1][0]), int(kps[1][1]))
+        b_kps["nose"] = (int(kps[2][0]), int(kps[2][1]))
+        b_kps["right_lip"] = (int(kps[3][0]), int(kps[3][1]))
+        b_kps["left_eye"] = (int(kps[4][0]), int(kps[4][1]))
 
         # shape
         b_shape = {}
