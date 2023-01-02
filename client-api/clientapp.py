@@ -86,6 +86,21 @@ def det(img):
 
 
 def videoStream():
+    """
+    Bu f-yaning vazifasi
+        - kameradan olingan rasmni det() f-yaga yuboradi va natijasini faces o'zgaruvchisiga yuklaydi
+        - kamerning manzili boyicha olingan rasm
+            {
+                "merchant_id": 1,
+                "location_id": 1,
+                "camera_id": 1,
+                "faces": faces,
+                "timestamp": f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}",
+                "frame": str(base64.encodebytes(img_encoded), "utf-8"),
+            }
+         ko'riishdia serverga yuboriladi
+    """
+
     cap = cv2.VideoCapture(0)
     cv2.namedWindow("Detected Objects", cv2.WINDOW_NORMAL)
 
