@@ -12,6 +12,12 @@ import uuid
 
 
 def det():
+  """
+  Yuzni aniqlashni test qilish
+      - berilgan path bo'yicha .jpg rasmlarni load qiladi
+      - har bir rasmni HR classidagi detection f-ya ....
+      - topilgan har bir yuz uchun yuz atrofida to'rtburchak chiziladi
+  """
     hr = HR()
     imgs_path = "../data/drive/rasmlar_chiqish/1_1_1_2022-10-09-17-38-10.jpg"
 
