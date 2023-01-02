@@ -6,6 +6,12 @@ import uuid
 
 
 def det():
+    """
+    Yuzni aniqlashni test qilish
+        - berilgan path bo'yicha .jpg rasmlarni load qiladi
+        - har bir rasmni HR classidagi detection f-ya yordamida barcha yuzlarni aniqlaydi( f-yaga bazi parametrlarni berish mumkin, masalan: module, det_size va det_thresh)
+        - topilgan har bir yuz uchun yuz atrofida to'rtburchak chiziladi
+    """
     hr = HR()
     imgs_path = "../data/drive/rasmlar_chiqish/1_1_1_2022-10-09-17-38-10.jpg"
 
@@ -21,10 +27,6 @@ def det():
             y2 = int(bbox[3])
             # draw bbox
             cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
-
-        filename = os.path.join("", "test-det_score-" + str(uuid.uuid4()) + ".jpg")
-        print(filename)
-        cv2.imwrite(filename, img)
 
 
 det()
