@@ -3,26 +3,36 @@ from src.hr import HR
 import cv2
 
 
-# {
-#     bbox:
-#         {
-#             x1
-#             y1
-#             x2
-#             y2
-#         }
-#     kps:
-#         {
-#
-#         }
-#     size:
-#         {
-#
-#         }
-# }
-
-
 def det():
+    """
+    Bu f-ya:
+        - kerakli rasmni load qiladi.
+        - HR classi yordamida rasmdiagi har bir yuz uchun
+            {
+                bbox:
+                    {
+                        x1
+                        y1
+                        x2
+                        y2
+                    }
+                kps:
+                    {
+                        right_eye
+                        left_eye
+                        nose
+                        right_lip
+                        left_lip
+                    }
+                size:
+                    {
+                        height
+                        width
+                        channel
+                    }
+            }
+            ma'lumotlarni API orqali serverga yuboradi
+    """
     _path = "../data/drive/rasmlar_chiqish/1_1_1_2022-10-09-17-38-10.jpg"
     img = cv2.imread(_path)
     myHR = HR()
