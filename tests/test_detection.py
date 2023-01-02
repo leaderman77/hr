@@ -10,7 +10,6 @@ def test_det():
     """
     Yuzni aniqlashni test qilish:
         - berilgan path bo'yicha barcha .jpg rasmlarni load qiladi
-        - har bir rasmni HR classidagi detection f-ya yordamida barcha yuzlarni aniqlaydi( f-yaga bazi parametrlarni berish mumkin, masalan: module, det_size va det_thresh)
         - topilgan har bir yuz uchun yuz atrofida to'rtburchak chiziladi
     """
     hr = HR()
