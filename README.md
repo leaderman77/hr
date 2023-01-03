@@ -17,15 +17,15 @@ Quyidagicha
     ├── LICENSE.md
     ├── environment.yml
     ├── setup.py
-    ├── src
+    ├── src # funksional kodlar
     │   └── utils.py
     ├── models
-    ├── docs
-    ├── tests
-    ├── scripts
+    ├── docs # dokumentlar
+    ├── tests # testlar
+    ├── scripts # src dan foydalanib qilingan kodlar
         └── notebooks
-    ├── client-api
-    └── data
+    ├── client-api # klientga oid kodlar
+    └── data # rasmlar, videolar
 
 
 ### PR ochish qoidasi
