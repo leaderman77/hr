@@ -6,6 +6,8 @@ import requests
 import base64
 import datetime
 
+myHR = HR()
+
 
 def det(img):
     """
@@ -38,7 +40,6 @@ def det(img):
             ma'lumotlarni API orqali serverga yuboradi
     """
 
-    myHR = HR()
     faces = myHR.detection(img)
     det_result = {}
     print(type(faces))
