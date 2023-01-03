@@ -25,7 +25,8 @@ def det(img):
                         "right_eye": [1303, 969],
                         "left_eye": [1358, 1041],
                         "nose": [1335, 1017],
-                        "right_lip": [1307, 1037]
+                        "right_lip": [1307, 1037],
+                        "left_lip": [1358, 1041]
                     },
                 "shape":
                     {
@@ -36,8 +37,7 @@ def det(img):
             }
             ma'lumotlarni API orqali serverga yuboradi
     """
-    # _path = "../data/drive/rasmlar_chiqish/1_1_1_2022-10-09-17-38-10.jpg"
-    # img = cv2.imread(_path)
+
     myHR = HR()
     faces = myHR.detection(img)
     det_result = {}
@@ -62,7 +62,7 @@ def det(img):
         b_kps["left_eye"] = (int(kps[1][0]), int(kps[1][1]))
         b_kps["nose"] = (int(kps[2][0]), int(kps[2][1]))
         b_kps["right_lip"] = (int(kps[3][0]), int(kps[3][1]))
-        b_kps["left_eye"] = (int(kps[4][0]), int(kps[4][1]))
+        b_kps["left_lip"] = (int(kps[4][0]), int(kps[4][1]))
 
         # shape
         b_shape = {}
@@ -122,12 +122,7 @@ def videoStream():
             # prepare headers for http request
             # content_type = 'application/json'  # 'image/jpeg'
             # headers = {'content-type': content_type}
-            cv2.imwrite("frame.jpg", frame)
-            img = cv2.imread(os.path.join("frame.jpg"))
-
-            _, img_encoded = cv2.imencode(".jpg", img)
-
-            img_str = str(base64.encodebytes(img_encoded))
+            _, img_encoded = cv2.imencode(".jpg", frame)
 
             response = requests.post(
                 test_url,
@@ -142,7 +137,6 @@ def videoStream():
             )
             print(response.status_code)
             cv2.imshow("Detected Objects", frame)
-
         except Exception as e:
             print(e)
 
