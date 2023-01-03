@@ -98,7 +98,7 @@ def videoStream():
                 "timestamp": f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}",
                 "frame": str(base64.encodebytes(img_encoded), "utf-8"),
             }
-         ko'riishdia serverga yuboriladi
+         ko'rinishida serverga yuboriladi
     """
 
     cap = cv2.VideoCapture(0)
