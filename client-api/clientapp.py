@@ -1,41 +1,45 @@
 import json
 from src.hr import HR
 import cv2
+import os
+import requests
+import base64
+import datetime
+
+myHR = HR()
 
 
-def det():
+def det(img):
     """
     Bu f-ya:
         - kerakli rasmni load qiladi.
         - HR classi yordamida rasmdiagi har bir yuz uchun
             {
-                bbox:
+                "bbox":
                     {
-                        x1
-                        y1
-                        x2
-                        y2
-                    }
-                kps:
+                        "x1": 1265,
+                        "y1": 897,
+                        "x2": 1412,
+                        "y2": 1078
+                    },
+                "kps":
                     {
-                        right_eye
-                        left_eye
-                        nose
-                        right_lip
-                        left_lip
-                    }
-                size:
+                        "right_eye": [1303, 969],
+                        "left_eye": [1358, 1041],
+                        "nose": [1335, 1017],
+                        "right_lip": [1307, 1037],
+                        "left_lip": [1358, 1041]
+                    },
+                "shape":
                     {
-                        height
-                        width
-                        channel
+                        "h": 181,
+                        "w": 147,
+                        "c": 3
                     }
             }
             ma'lumotlarni API orqali serverga yuboradi
     """
-    _path = "../data/drive/rasmlar_chiqish/1_1_1_2022-10-09-17-38-10.jpg"
-    img = cv2.imread(_path)
-    myHR = HR()
+
     faces = myHR.detection(img)
     det_result = {}
     print(type(faces))
@@ -59,7 +63,7 @@ def det():
         b_kps["left_eye"] = (int(kps[1][0]), int(kps[1][1]))
         b_kps["nose"] = (int(kps[2][0]), int(kps[2][1]))
         b_kps["right_lip"] = (int(kps[3][0]), int(kps[3][1]))
-        b_kps["left_eye"] = (int(kps[4][0]), int(kps[4][1]))
+        b_kps["left_lip"] = (int(kps[4][0]), int(kps[4][1]))
 
         # shape
         b_shape = {}
@@ -75,12 +79,67 @@ def det():
 
         det_result["p" + str(i)] = obj
 
-    print(det_result)
-    print(type(det_result))
     det_json = json.dumps(det_result)
     print(det_json)
     print(type(det_json))
+    return det_json
     # det_json API orqali jo'natiladi
 
 
-det()
+def videoStream():
+    """
+    Bu f-yaning vazifasi
+        - kameradan olingan rasmni det() f-yaga yuboradi va natijasini faces o'zgaruvchisiga yuklaydi
+        - kamerning manzili boyicha olingan rasm
+            {
+                "merchant_id": 1,
+                "location_id": 1,
+                "camera_id": 1,
+                "faces": faces,
+                "timestamp": f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}",
+                "frame": str(base64.encodebytes(img_encoded), "utf-8"),
+            }
+         ko'rinishida serverga yuboriladi
+    """
+
+    cap = cv2.VideoCapture(0)
+    cv2.namedWindow("Detected Objects", cv2.WINDOW_NORMAL)
+
+    while cap.isOpened():
+        # Press key q to stop
+        if cv2.waitKey(1) == ord("q"):
+            break
+        try:
+            ret, frame = cap.read()
+            if not ret:
+                break
+            # frameni yuborish kerak
+            faces = det(frame)
+
+            # APIga yuboriladigan datalar shu yerdan ketadi
+            addr = "http://3.74.85.246:85"
+            test_url = addr + "/api/frame/create/"
+
+            # prepare headers for http request
+            # content_type = 'application/json'  # 'image/jpeg'
+            # headers = {'content-type': content_type}
+            _, img_encoded = cv2.imencode(".jpg", frame)
+
+            response = requests.post(
+                test_url,
+                data={
+                    "merchant_id": 1,
+                    "location_id": 1,
+                    "camera_id": 1,
+                    "faces": faces,
+                    "timestamp": f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}",
+                    "frame": str(base64.encodebytes(img_encoded), "utf-8"),
+                },
+            )
+            print(response.status_code)
+            cv2.imshow("Detected Objects", frame)
+        except Exception as e:
+            print(e)
+
+
+videoStream()
