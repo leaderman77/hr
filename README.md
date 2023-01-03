@@ -39,3 +39,4 @@ Masalan, bu yerda: [link](https://github.com/orgs/cradle-uz/projects/2/views/1?l
   git checkout -b "hr-1-repo-strukturalash"
   ```
 - PR qilgan kishi albatta o'sha PRni tugatishga masul.
+- Python kodlar dokumentatsiyasi numpy-style da bo'lish kerak. Misol uchun [link](https://python.plainenglish.io/how-to-write-numpy-style-docstrings-a092121403ba) 
