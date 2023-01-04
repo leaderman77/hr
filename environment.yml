@@ -10,4 +10,6 @@ dependencies:
   - pandas==1.4.1
   - opencv
   - pip:
-    - onnxruntime
+    - onnxruntime==1.13.1
+    - insightface==0.7.2
+    - python-decouple==3.6
