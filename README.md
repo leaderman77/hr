@@ -5,7 +5,6 @@
     conda install -c conda-forge mamba
     mamba env create -f environment.yml
     conda activate cradle_hr
-    pip install -U insightface
     pip install -e .
     pre-commit install
     ```
@@ -18,15 +17,15 @@ Quyidagicha
     ├── LICENSE.md
     ├── environment.yml
     ├── setup.py
-    ├── src
+    ├── src # funksional kodlar
     │   └── utils.py
     ├── models
-    ├── docs
-    ├── tests
-    ├── scripts
+    ├── docs # dokumentlar
+    ├── tests # testlar
+    ├── scripts # src dan foydalanib qilingan kodlar
         └── notebooks
-    ├── client-api
-    └── data
+    ├── client-api # klientga oid kodlar
+    └── data # rasmlar, videolar
 
 
 ### PR ochish qoidasi
@@ -40,3 +39,4 @@ Masalan, bu yerda: [link](https://github.com/orgs/cradle-uz/projects/2/views/1?l
   git checkout -b "hr-1-repo-strukturalash"
   ```
 - PR qilgan kishi albatta o'sha PRni tugatishga masul.
+- Python kodlar dokumentatsiyasi numpy-style da bo'lish kerak. Misol uchun [link](https://python.plainenglish.io/how-to-write-numpy-style-docstrings-a092121403ba) 
