@@ -4,8 +4,12 @@ import requests
 import base64
 import datetime
 import time
-from decouple import config
 import json
+import os
+from decouple import AutoConfig
+
+CONFIG_DIR = os.path.join(os.path.dirname(__file__), "config")
+config = AutoConfig(search_path=CONFIG_DIR)
 
 from hr import HR
 
