@@ -12,3 +12,4 @@ dependencies:
       - opencv-python
       - onnxruntime
       - insightface==0.7.2
+      - python-decouple==3.6
