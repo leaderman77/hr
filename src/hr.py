@@ -26,6 +26,7 @@ class HR:
         print("age-gender f-ya")
 
     def embeding(self):
+        print("Test")
         print("embeding f-ya")
 
 
