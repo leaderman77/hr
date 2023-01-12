@@ -43,8 +43,6 @@ class HR:
 
         Parameters
         ----------
-        self
-            The first parameter. Represents the instance of the HR class
         img : :obj:`Unit8`
             The second parameter. Image
 
@@ -59,7 +57,7 @@ class HR:
         for face in faces:
 
             # get face embedding and upload it into face.embedding field
-            face.embedding = self.arcFace.get(img, face)
+            embedding = self.arcFace.get(img, face)
             img_face_crop = face_align.norm_crop(
                   img, 
                   landmark=face.kps, 
@@ -67,7 +65,7 @@ class HR:
             )
 
             # collect detected face and cropped face image's shape
-            face_embeddings.append([face, img_face_crop.shape])
+            face_embeddings.append([face, embedding, img_face_crop.shape])
 
         return face_embeddings
 

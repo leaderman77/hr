@@ -13,25 +13,28 @@ def test_embedding():
            but different from picture_3.
     """
     hr = HR()
-    img1_path = "../data/drive/rasmlar_kirish/1_1_1_2022-10-09-17-32-26.jpg"
-    img2_path = "../data/drive/rasmlar_chiqish/1_1_1_2022-10-09-17-38-10.jpg"
-    img3_path = "../data/s3/merchant_1/location_1/camera_1/2022-11-02/2022-11-02 18_59_59.jpg"
+    img1_path = "../tests/embedding/1_1_1_2022-10-09-17-32-26.jpg"
+    img2_path = "../tests/embedding/1_1_1_2022-10-09-17-38-10.jpg"
+    img3_path = "../tests/embedding/2022-11-02 18_59_59.jpg"
 
 
     img1 = cv2.imread(img1_path)
     feat_1_ruzmat = hr.embeding(img1)
-    feat_1_ruzmat = feat_1_ruzmat[0][0].embedding
+    feat_1_ruzmat = feat_1_ruzmat[0][1]
 
     img2 = cv2.imread(img2_path)
     feat_2_ruzmat = hr.embeding(img2)
-    feat_2_ruzmat = feat_2_ruzmat[0][0].embedding
+    feat_2_ruzmat = feat_2_ruzmat[0][1]
 
     img3 = cv2.imread(img3_path)
     feat_3_samariddin = hr.embeding(img3)
-    feat_3_samariddin = feat_3_samariddin[0][0].embedding
+    feat_3_samariddin = feat_3_samariddin[0][1]
 
     sim_same = compute_sim(feat_1_ruzmat, feat_2_ruzmat)
     sim_diff = compute_sim(feat_1_ruzmat, feat_3_samariddin)
+
+    print("Sim Same: ", sim_same)
+    print("Sim Diff: ", sim_diff)
 
     assert sim_same > sim_diff
 
