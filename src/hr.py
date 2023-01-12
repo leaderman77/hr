@@ -60,7 +60,11 @@ class HR:
 
             # get face embedding and upload it into face.embedding field
             face.embedding = self.arcFace.get(img, face)
-            img_face_crop = face_align.norm_crop(img, landmark=face.kps, image_size=self.arcFace.input_size[0])
+            img_face_crop = face_align.norm_crop(
+                  img, 
+                  landmark=face.kps, 
+                  image_size=self.arcFace.input_size[0]
+            )
 
             # collect detected face and cropped face image's shape
             face_embeddings.append([face, img_face_crop.shape])
