@@ -183,10 +183,10 @@ class CameraProcessor:
         cv2.destroyAllWindows()
 
 
-# ishlatilishiqq
-processor = CameraProcessor(config)
-while True:
-    try:
-        processor.process()
-    except Exception as ex:
-        print("xatolik ", ex)
+# # ishlatilishiqq
+# processor = CameraProcessor(config)
+# while True:
+#     try:
+#         processor.process()
+#     except Exception as ex:
+#         print("xatolik ", ex)
