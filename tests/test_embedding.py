@@ -20,15 +20,15 @@ def test_embedding():
 
     img1 = cv2.imread(img1_path)
     feat_1_ruzmat = hr.embeding(img1)
-    feat_1_ruzmat = feat_1_ruzmat[0][1]
+    feat_1_ruzmat = feat_1_ruzmat[0][2]
 
     img2 = cv2.imread(img2_path)
     feat_2_ruzmat = hr.embeding(img2)
-    feat_2_ruzmat = feat_2_ruzmat[0][1]
+    feat_2_ruzmat = feat_2_ruzmat[0][2]
 
     img3 = cv2.imread(img3_path)
     feat_3_samariddin = hr.embeding(img3)
-    feat_3_samariddin = feat_3_samariddin[0][1]
+    feat_3_samariddin = feat_3_samariddin[0][2]
 
     sim_same = compute_sim(feat_1_ruzmat, feat_2_ruzmat)
     sim_diff = compute_sim(feat_1_ruzmat, feat_3_samariddin)

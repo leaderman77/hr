@@ -52,20 +52,23 @@ class HR:
         cropped face image's shape
         """
 
-        face_embeddings = []
         faces = self.app.get(img)
+
+        face_embeddings = []
         for face in faces:
 
-            # get face embedding and upload it into face.embedding field
+            # Get the face embedding vector
             embedding = self.arcFace.get(img, face)
-            img_face_crop = face_align.norm_crop(
-                  img, 
-                  landmark=face.kps, 
-                  image_size=self.arcFace.input_size[0]
+
+            # Crop face from img
+            crop_face_img = face_align.norm_crop(
+                img,
+                landmark=face.kps,
+                image_size=self.arcFace.input_size[0]
             )
 
-            # collect detected face and cropped face image's shape
-            face_embeddings.append([face, embedding, img_face_crop.shape])
+            # collect bboxes, kpss, embeddings, crop shape, img shape
+            face_embeddings.append([face.bbox, face.kps, embedding, crop_face_img.shape, img.shape])
 
         return face_embeddings
 
