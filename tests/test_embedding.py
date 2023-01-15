@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 from src.hr import HR
+from utils import compute_sim
+
 
 def test_embedding():
     """
@@ -44,11 +46,3 @@ def test_embedding():
     else:
         print("Incorrect")
         print("{} > {}".format(sim_same, sim_diff))
-
-
-def compute_sim(feat1, feat2):
-    from numpy.linalg import norm
-    feat1 = feat1.ravel()
-    feat2 = feat2.ravel()
-    sim = np.dot(feat1, feat2) / (norm(feat1) * norm(feat2))
-    return sim
