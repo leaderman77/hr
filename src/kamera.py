@@ -5,11 +5,6 @@ import base64
 import datetime
 import time
 import json
-import os
-from decouple import AutoConfig
-
-CONFIG_DIR = os.path.join(os.path.dirname(__file__), "config")
-config = AutoConfig(search_path=CONFIG_DIR)
 
 from hr import HR
 
@@ -183,10 +178,10 @@ class CameraProcessor:
         cv2.destroyAllWindows()
 
 
-# ishlatilishiqq
-processor = CameraProcessor(config)
-while True:
-    try:
-        processor.process()
-    except Exception as ex:
-        print("xatolik ", ex)
+# # ishlatilishiqq
+# processor = CameraProcessor(config)
+# while True:
+#     try:
+#         processor.process()
+#     except Exception as ex:
+#         print("xatolik ", ex)
