@@ -3,7 +3,7 @@
 - Repo boshidan (root) quyidagilarni qiling:
     ```shell
     conda install -c conda-forge mamba
-    mamba env create -f environment.yml
+    mamba env create -f environment_fix.yml
     conda activate cradle_hr
     pip install -e .
     pre-commit install
