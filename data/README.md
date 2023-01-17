@@ -16,3 +16,12 @@
 
 
 ### s3 data - :point_right: [Bu yerda](https://drive.google.com/drive/folders/18A2Ehy1_ZwvIdjRTQ-4alojpUGQOZ3OE?usp=sharing)
+
+- Linkni bosganingizda `merchant_1`ni ko'rasiz 
+- O'shani download qilasiz
+- Unzip qiling 
+- `data/` folderiga borib `s3` papkani yaratasiz  
+- `s3`ga `merchant_1` ni tashlaysiz
+
+**NOTE**: Bu data githubga push qilinmasligi kerak
+
