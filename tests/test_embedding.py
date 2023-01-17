@@ -1,6 +1,12 @@
+import os.path
+
 import cv2
 from hr import HR
 from utils import compute_sim
+from utils import project_dir
+
+
+PROJECT_DIR = project_dir()
 
 
 def test_embedding():
@@ -14,9 +20,10 @@ def test_embedding():
            but different from picture_3.
     """
     hr = HR()
-    img1_path = "../tests/embedding/1_1_1_2022-10-09-17-32-26.jpg"
-    img2_path = "../tests/embedding/1_1_1_2022-10-09-17-38-10.jpg"
-    img3_path = "../tests/embedding/2022-11-02 18_59_59.jpg"
+    root_emb_data = os.path.join(PROJECT_DIR, "tests", "embedding")
+    img1_path = os.path.join(root_emb_data, "1_1_1_2022-10-09-17-32-26.jpg")
+    img2_path = os.path.join(root_emb_data, "1_1_1_2022-10-09-17-38-10.jpg")
+    img3_path = os.path.join(root_emb_data, "2022-11-02 18_59_59.jpg")
 
     img1 = cv2.imread(img1_path)
     feat_1_ruzmat = hr.embeding(img1)

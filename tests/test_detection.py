@@ -1,9 +1,13 @@
-import cv2
-from src.hr import HR
-import glob
 import os
-import uuid
+import cv2
+import glob
 import numpy as np
+
+from hr import HR
+from utils import project_dir
+
+
+PROJECT_DIR = project_dir()
 
 
 def test_det():
@@ -13,8 +17,9 @@ def test_det():
         - topilgan har bir yuz uchun yuz atrofida to'rtburchak chiziladi
     """
     hr = HR()
-    imgs_path = "../data/drive/rasmlar_kirish/2022-11-02 18_59_59.jpg"
-
+    imgs_path = os.path.join(
+        PROJECT_DIR, "data", "drive", "rasmlar_kirish", "2022-11-02 18_59_59.jpg"
+    )
     for img_path in glob.glob(imgs_path):
         img = cv2.imread(img_path)
         det_data = hr.detection(img)
