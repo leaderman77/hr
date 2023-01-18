@@ -12,8 +12,8 @@ from hr import HR
 class CameraProcessor:
     def __init__(self, config, option_list=["emb"]):
         self.config = config
-        self.app = HR()
         self.option_list = option_list
+        self.app = HR(option_list=self.option_list)
         cam_path = config("CAMERA_PATH")
         if config("CAMERA_PATH") == "0":
             cam_path = int(config("CAMERA_PATH"))
@@ -51,7 +51,7 @@ class CameraProcessor:
         """
         return math.sqrt((bbox[0] - bbox[2]) ** 2 + (bbox[1] - bbox[3]) ** 2)
 
-    def face2json(self, face):
+    def det2json(self, face):
         """
         Convert face data to JSON format.
 
@@ -65,11 +65,62 @@ class CameraProcessor:
         json_data : dict
             Dictionary containing face data in JSON format.
         """
-        # bizda faqat 2 option bor (det va emb) shuning uchun if else qildim, keyinchalik agegender qoshilganda elif qoshiladi.
-        if self.option_list[0] == "emb":
-            bbox, kps, embedding, crop_face_img, img_shape = face
-        else:
-            bbox, kps, crop_face_img = face
+
+        bbox, kps, crop_face_img = face
+
+        x1 = int(bbox[0])
+        y1 = int(bbox[1])
+        x2 = int(bbox[2])
+        y2 = int(bbox[3])
+
+        # bbox
+        b_box = {}
+        b_box["x1"] = x1
+        b_box["y1"] = y1
+        b_box["x2"] = x2
+        b_box["y2"] = y2
+
+        # kps
+        b_kps = {}
+        b_kps["right_eye"] = (int(kps[0][0]), int(kps[0][1]))
+        b_kps["left_eye"] = (int(kps[1][0]), int(kps[1][1]))
+        b_kps["nose"] = (int(kps[2][0]), int(kps[2][1]))
+        b_kps["right_lip"] = (int(kps[3][0]), int(kps[3][1]))
+        b_kps["left_lip"] = (int(kps[4][0]), int(kps[4][1]))
+
+        # crop img shape
+        b_crop_shape = {}
+        b_crop_shape["h"] = crop_face_img[0]
+        b_crop_shape["w"] = crop_face_img[1]
+        b_crop_shape["c"] = crop_face_img[2]
+
+        # har bir topilgan yuz uchun
+        obj = {}
+        obj["bbox"] = b_box
+        obj["kps"] = b_kps
+        obj["crop_shape"] = b_crop_shape
+
+        det_result = {}
+        det_result["person"] = obj
+
+        json_data = json.dumps(det_result)
+        return json_data
+
+    def emb2json(self, face):
+        """
+        Convert face data to JSON format.
+
+        Parameters
+        ----------
+        face : object
+            Object containing face data.
+
+        Returns
+        -------
+        json_data : dict
+            Dictionary containing face data in JSON format.
+        """
+        bbox, kps, embedding, crop_face_img, img_shape = face
 
         x1 = int(bbox[0])
         y1 = int(bbox[1])
@@ -93,8 +144,7 @@ class CameraProcessor:
 
         # embedding
         b_embedding = {}
-        if self.option_list[0] == "emb":
-            b_embedding["embedding_vek"] = embedding
+        b_embedding["embedding_vek"] = embedding
 
         # crop img shape
         b_crop_shape = {}
@@ -104,20 +154,17 @@ class CameraProcessor:
 
         # orginal img shape
         b_org_shape = {}
-        if self.option_list[0] == "emb":
-            b_org_shape["h"] = crop_face_img[0]
-            b_org_shape["w"] = crop_face_img[1]
-            b_org_shape["c"] = crop_face_img[2]
+        b_org_shape["h"] = crop_face_img[0]
+        b_org_shape["w"] = crop_face_img[1]
+        b_org_shape["c"] = crop_face_img[2]
 
         # har bir topilgan yuz uchun
         obj = {}
         obj["bbox"] = b_box
         obj["kps"] = b_kps
         obj["crop_shape"] = b_crop_shape
-
-        if self.option_list[0] == "emb":
-            obj["embedding"] = b_embedding
-            obj["org_shape"] = b_org_shape
+        obj["embedding"] = b_embedding
+        obj["org_shape"] = b_org_shape
 
         det_result = {}
         det_result["person"] = obj
@@ -125,7 +172,7 @@ class CameraProcessor:
         json_data = json.dumps(det_result)
         return json_data
 
-    def send_image(self, image, face):
+    def send_image(self, image, facedata):
         """
         Send image and face data to the API.
 
@@ -146,7 +193,7 @@ class CameraProcessor:
                 "camera_id": int(self.config("CAMERA_ID")),
                 "timestamp": f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}",
                 "frame": str(base64.encodebytes(img_encoded), "utf-8"),
-                "facedata": self.face2json(face),
+                "facedata": facedata,
             },
         )
         print(response.status_code)
@@ -169,15 +216,24 @@ class CameraProcessor:
         image : ndarray
             Image to analyze.
         """
-        faces = self.app.detection(image)
+        dioganal_min = int(self.config("DIOGANAL_MIN"))
+        dioganal_max = int(self.config("DIOGANAL_MAX"))
+
+        if self.option_list[0] == "emb":
+            faces = self.app.arcFace(image)
+        else:
+            faces = self.app.detection(image)
+
         for face in faces:
             bbox = face[0]
             diagonal = self.get_diagonal(bbox)
             print("dioganal: ", diagonal)
-            dioganal_min = int(self.config("DIOGANAL_MIN"))
-            dioganal_max = int(self.config("DIOGANAL_MAX"))
             if dioganal_min < diagonal < dioganal_max:
-                self.send_image(image, face)
+                if self.option_list[0] == "emb":
+                    facedata = self.emb2json(face)
+                else:
+                    facedata = self.det2json(face)
+                self.send_image(image, facedata)
 
     def process(self):
         """

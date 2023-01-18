@@ -4,15 +4,25 @@ from insightface.model_zoo import ArcFaceONNX
 import os
 from insightface.utils import face_align
 
-class HR:
-    def __init__(self, module="detection", det_size=(640, 640), det_thresh=0.3):
-        self.app = FaceAnalysis(allowed_modules=[module])
-        self.app.prepare(ctx_id=0, det_size=det_size, det_thresh=det_thresh)
 
-        assets_dir = os.path.expanduser('~/.insightface/models/buffalo_l')
-        model_path = os.path.join(assets_dir, 'w600k_r50.onnx')
-        self.arcFace = ArcFaceONNX(model_path)
-        self.arcFace.prepare(0)
+class HR:
+    def __init__(
+        self,
+        module="detection",
+        det_size=(640, 640),
+        det_thresh=0.3,
+        option_list=["emb"],
+    ):
+        self.option_list = option_list
+        if self.option_list[0] == "det":
+            self.app = FaceAnalysis(allowed_modules=[module])
+            self.app.prepare(ctx_id=0, det_size=det_size, det_thresh=det_thresh)
+
+        if self.option_list[0] == "emb":
+            assets_dir = os.path.expanduser("~/.insightface/models/buffalo_l")
+            model_path = os.path.join(assets_dir, "w600k_r50.onnx")
+            self.arcFace = ArcFaceONNX(model_path)
+            self.arcFace.prepare(0)
 
     def detection(self, img):
         faces = self.app.get(img)
@@ -62,13 +72,13 @@ class HR:
 
             # Crop face from img
             crop_face_img = face_align.norm_crop(
-                img,
-                landmark=face.kps,
-                image_size=self.arcFace.input_size[0]
+                img, landmark=face.kps, image_size=self.arcFace.input_size[0]
             )
 
             # collect bboxes, kpss, embeddings, crop shape, img shape
-            face_embeddings.append([face.bbox, face.kps, embedding, crop_face_img.shape, img.shape])
+            face_embeddings.append(
+                [face.bbox, face.kps, embedding, crop_face_img.shape, img.shape]
+            )
 
         return face_embeddings
 
