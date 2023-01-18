@@ -10,9 +10,10 @@ from hr import HR
 
 
 class CameraProcessor:
-    def __init__(self, config):
+    def __init__(self, config, option_list=["emb"]):
         self.config = config
         self.app = HR()
+        self.option_list = option_list
         cam_path = config("CAMERA_PATH")
         if config("CAMERA_PATH") == "0":
             cam_path = int(config("CAMERA_PATH"))
@@ -64,7 +65,12 @@ class CameraProcessor:
         json_data : dict
             Dictionary containing face data in JSON format.
         """
-        bbox, kps, _shape = face
+        # bizda faqat 2 option bor (det va emb) shuning uchun if else qildim, keyinchalik agegender qoshilganda elif qoshiladi.
+        if self.option_list[0] == "emb":
+            bbox, kps, embedding, crop_face_img, img_shape = face
+        else:
+            bbox, kps, crop_face_img = face
+
         x1 = int(bbox[0])
         y1 = int(bbox[1])
         x2 = int(bbox[2])
@@ -85,17 +91,33 @@ class CameraProcessor:
         b_kps["right_lip"] = (int(kps[3][0]), int(kps[3][1]))
         b_kps["left_lip"] = (int(kps[4][0]), int(kps[4][1]))
 
-        # shape
-        b_shape = {}
-        b_shape["h"] = _shape[0]
-        b_shape["w"] = _shape[1]
-        b_shape["c"] = _shape[2]
+        # embedding
+        b_embedding = {}
+        if self.option_list[0] == "emb":
+            b_embedding["embedding_vek"] = embedding
+
+        # crop img shape
+        b_crop_shape = {}
+        b_crop_shape["h"] = crop_face_img[0]
+        b_crop_shape["w"] = crop_face_img[1]
+        b_crop_shape["c"] = crop_face_img[2]
+
+        # orginal img shape
+        b_org_shape = {}
+        if self.option_list[0] == "emb":
+            b_org_shape["h"] = crop_face_img[0]
+            b_org_shape["w"] = crop_face_img[1]
+            b_org_shape["c"] = crop_face_img[2]
 
         # har bir topilgan yuz uchun
         obj = {}
         obj["bbox"] = b_box
         obj["kps"] = b_kps
-        obj["shape"] = b_shape
+        obj["crop_shape"] = b_crop_shape
+
+        if self.option_list[0] == "emb":
+            obj["embedding"] = b_embedding
+            obj["org_shape"] = b_org_shape
 
         det_result = {}
         det_result["person"] = obj
@@ -149,7 +171,7 @@ class CameraProcessor:
         """
         faces = self.app.detection(image)
         for face in faces:
-            bbox, kps, _shape = face
+            bbox = face[0]
             diagonal = self.get_diagonal(bbox)
             print("dioganal: ", diagonal)
             dioganal_min = int(self.config("DIOGANAL_MIN"))
