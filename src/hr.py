@@ -1,8 +1,7 @@
 from insightface.app import FaceAnalysis
-from insightface.model_zoo import ArcFaceONNX
+from insightface.model_zoo import ArcFaceONNX, Attribute
 import os
 from insightface.utils import face_align
-
 
 class HR:
     def __init__(
@@ -21,6 +20,12 @@ class HR:
             model_path = os.path.join(assets_dir, "w600k_r50.onnx")
             self.arcFace = ArcFaceONNX(model_path)
             self.arcFace.prepare(0)
+
+        # agegender uchun kerakli
+        assets_dir = os.path.expanduser("~/.insightface/models/buffalo_l")
+        agegender_path = os.path.join(assets_dir, "genderage.onnx")
+        self.ag = Attribute(model_file=agegender_path)
+        self.ag.prepare(0)
 
     def detection(self, img):
         """
@@ -48,8 +53,28 @@ class HR:
 
         return all_detect_faces
 
-    def agegender(self):
-        print("age-gender f-ya")
+    def agegender(self, img):
+        """
+        Berilgan rasmdan yuzni aniqlab, uni yoshi va jinisi aniqlab qaytaradi
+
+        Parameters
+        ----------
+        img
+
+        Returns
+        -------
+        list
+            2 ta elementi: 1-age, 2-gender
+        """
+        faces = self.app.get(img)
+        if not faces:
+            raise ValueError("Rasmdan hech qanday yuz aniqlanmadi!")
+
+        face_data = []
+        for face in faces:
+            gender, age = self.ag.get(img, face)
+            face_data.append([gender, age])
+        return face_data
 
     def embeding(self, img):
         """Class method on getting face embeddings
