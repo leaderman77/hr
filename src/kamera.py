@@ -191,7 +191,7 @@ class CameraProcessor:
                 "merchant_id": int(self.config("MERCHANT_ID")),
                 "location_id": int(self.config("LOCATION_ID")),
                 "camera_id": int(self.config("CAMERA_ID")),
-                "timestamp": f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}",
+                "timestamp": f"{datetime.datetime.now():%Y-%m-%d-%H:%M:%S}",
                 "frame": str(base64.encodebytes(img_encoded), "utf-8"),
                 "facedata": facedata,
             },
