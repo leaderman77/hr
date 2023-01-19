@@ -219,20 +219,18 @@ class CameraProcessor:
         dioganal_min = int(self.config("DIOGANAL_MIN"))
         dioganal_max = int(self.config("DIOGANAL_MAX"))
 
-        if self.option_list[0] == "emb":
+        if "emb" in self.option_list:
             faces = self.app.arcFace(image)
+            convert2json = self.emb2json
         else:
             faces = self.app.detection(image)
+            convert2json = self.det2json
 
         for face in faces:
             bbox = face[0]
             diagonal = self.get_diagonal(bbox)
-            print("dioganal: ", diagonal)
             if dioganal_min < diagonal < dioganal_max:
-                if self.option_list[0] == "emb":
-                    facedata = self.emb2json(face)
-                else:
-                    facedata = self.det2json(face)
+                facedata = convert2json(face)
                 self.send_image(image, facedata)
 
     def process(self):

@@ -14,17 +14,27 @@ class HR:
         option_list=["emb"],
     ):
         self.option_list = option_list
-        if self.option_list[0] == "det":
+
+        if "emb" in self.option_list:
             self.app = FaceAnalysis(allowed_modules=[module])
             self.app.prepare(ctx_id=0, det_size=det_size, det_thresh=det_thresh)
-
-        if self.option_list[0] == "emb":
             assets_dir = os.path.expanduser("~/.insightface/models/buffalo_l")
             model_path = os.path.join(assets_dir, "w600k_r50.onnx")
             self.arcFace = ArcFaceONNX(model_path)
             self.arcFace.prepare(0)
 
     def detection(self, img):
+        """
+        Analyses the given image and return each face's bbox, kps and shape of croped face
+        Parameters
+        ----------
+        img
+
+        Returns
+        -------
+        The method returns list of detected faces bbox that are populated with faces landmarks and
+        cropped face image's shape
+        """
         faces = self.app.get(img)
         all_detect_faces = []
         for face in faces:
