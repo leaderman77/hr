@@ -1,7 +1,8 @@
-from insightface.app import FaceAnalysis
-from insightface.model_zoo import ArcFaceONNX, Attribute
 import os
+
+from insightface.app import FaceAnalysis
 from insightface.utils import face_align
+from insightface.model_zoo import ArcFaceONNX, Attribute
 
 class HR:
     def __init__(

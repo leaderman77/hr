@@ -1,7 +1,6 @@
+import cv2
 import os.path
 
-import cv2
-import numpy as np
 from hr import HR
 from utils import project_dir
 
