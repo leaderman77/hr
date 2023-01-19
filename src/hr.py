@@ -1,18 +1,25 @@
-# import cv2
 from insightface.app import FaceAnalysis
-from insightface.model_zoo import ArcFaceONNX
+from insightface.model_zoo import ArcFaceONNX, Attribute
 import os
 from insightface.utils import face_align
+
 
 class HR:
     def __init__(self, module="detection", det_size=(640, 640), det_thresh=0.3):
         self.app = FaceAnalysis(allowed_modules=[module])
         self.app.prepare(ctx_id=0, det_size=det_size, det_thresh=det_thresh)
 
-        assets_dir = os.path.expanduser('~/.insightface/models/buffalo_l')
-        model_path = os.path.join(assets_dir, 'w600k_r50.onnx')
-        self.arcFace = ArcFaceONNX(model_path)
+        # embedding uchun kerakli
+        assets_dir = os.path.expanduser("~/.insightface/models/buffalo_l")
+        embed_path = os.path.join(assets_dir, "w600k_r50.onnx")
+        self.arcFace = ArcFaceONNX(embed_path)
         self.arcFace.prepare(0)
+
+        # agegender uchun kerakli
+        assets_dir = os.path.expanduser("~/.insightface/models/buffalo_l")
+        agegender_path = os.path.join(assets_dir, "genderage.onnx")
+        self.ag = Attribute(model_file=agegender_path)
+        self.ag.prepare(0)
 
     def detection(self, img):
         faces = self.app.get(img)
@@ -29,8 +36,28 @@ class HR:
 
         return all_detect_faces
 
-    def agegender(self):
-        print("age-gender f-ya")
+    def agegender(self, img):
+        """
+        Berilgan rasmdan yuzni aniqlab, uni yoshi va jinisi aniqlab qaytaradi
+
+        Parameters
+        ----------
+        img
+
+        Returns
+        -------
+        list
+            2 ta elementi: 1-age, 2-gender
+        """
+        faces = self.app.get(img)
+        if not faces:
+            raise ValueError("Rasmdan hech qanday yuz aniqlanmadi!")
+
+        face_data = []
+        for face in faces:
+            gender, age = self.ag.get(img, face)
+            face_data.append([gender, age])
+        return face_data
 
     def embeding(self, img):
         """Class method on getting face embeddings
@@ -62,13 +89,13 @@ class HR:
 
             # Crop face from img
             crop_face_img = face_align.norm_crop(
-                img,
-                landmark=face.kps,
-                image_size=self.arcFace.input_size[0]
+                img, landmark=face.kps, image_size=self.arcFace.input_size[0]
             )
 
             # collect bboxes, kpss, embeddings, crop shape, img shape
-            face_embeddings.append([face.bbox, face.kps, embedding, crop_face_img.shape, img.shape])
+            face_embeddings.append(
+                [face.bbox, face.kps, embedding, crop_face_img.shape, img.shape]
+            )
 
         return face_embeddings
 
