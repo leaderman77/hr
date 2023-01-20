@@ -1,4 +1,3 @@
-# import cv2
 from insightface.app import FaceAnalysis
 from insightface.model_zoo import ArcFaceONNX
 import os
