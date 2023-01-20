@@ -25,8 +25,8 @@ location_1 = [
 s = 0
 j = 0
 for idx, value in enumerate(location_1):
-    print("kamera_", idx + 1)
+    print("camera_", idx + 1)
     for i, joyi in enumerate(value):
-        print(i + 1, len(os.listdir(joyi)))
+        print(joyi[70:], "da", len(os.listdir(joyi)), "ta rasm")
         s = s + len(os.listdir(joyi))
     print("camera_", idx + 1, "da", s, "ta rasm bor")
