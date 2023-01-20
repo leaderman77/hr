@@ -1,6 +1,5 @@
 import cv2
-import numpy as np
-from src.hr import HR
+from hr import HR
 from utils import compute_sim
 
 
@@ -18,7 +17,6 @@ def test_embedding():
     img1_path = "../tests/embedding/1_1_1_2022-10-09-17-32-26.jpg"
     img2_path = "../tests/embedding/1_1_1_2022-10-09-17-38-10.jpg"
     img3_path = "../tests/embedding/2022-11-02 18_59_59.jpg"
-
 
     img1 = cv2.imread(img1_path)
     feat_1_ruzmat = hr.embeding(img1)

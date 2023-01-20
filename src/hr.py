@@ -4,6 +4,7 @@ from insightface.model_zoo import ArcFaceONNX
 import os
 from insightface.utils import face_align
 
+
 class HR:
     def __init__(self, module="detection", det_size=(640, 640), det_thresh=0.3):
         self.app = FaceAnalysis(allowed_modules=[module])
