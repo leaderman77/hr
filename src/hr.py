@@ -21,11 +21,6 @@ class HR:
             model_path = os.path.join(assets_dir, "w600k_r50.onnx")
             self.arcFace = ArcFaceONNX(model_path)
             self.arcFace.prepare(0)
-        # agegender uchun kerakli
-        assets_dir = os.path.expanduser("~/.insightface/models/buffalo_l")
-        agegender_path = os.path.join(assets_dir, "genderage.onnx")
-        self.ag = Attribute(model_file=agegender_path)
-        self.ag.prepare(0)
 
     def detection(self, img):
         faces = self.app.get(img)
