@@ -1,9 +1,13 @@
-import cv2
-from src.hr import HR
-import glob
 import os
-import uuid
+import cv2
+import glob
 import numpy as np
+
+from hr import HR
+from utils import project_dir
+
+
+PROJECT_DIR = project_dir()
 
 
 def test_det():
@@ -13,8 +17,9 @@ def test_det():
         - topilgan har bir yuz uchun yuz atrofida to'rtburchak chiziladi
     """
     hr = HR()
-    imgs_path = "../data/drive/rasmlar_chiqish/1_1_1_2022-10-09-17-38-10.jpg"
-
+    imgs_path = os.path.join(
+        PROJECT_DIR, "data", "drive", "rasmlar_kirish", "2022-11-02 18_59_59.jpg"
+    )
     for img_path in glob.glob(imgs_path):
         img = cv2.imread(img_path)
         det_data = hr.detection(img)
@@ -25,6 +30,7 @@ def test_det():
             y1 = int(bbox[1])
             x2 = int(bbox[2])
             y2 = int(bbox[3])
+
             # draw bbox
             cv2.rectangle(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
             # print(bbox)
@@ -36,7 +42,7 @@ def test_det():
                     cv2.circle(img, (kps[l][0], kps[l][1]), 5, (0, 0, 255), -1)
             # cv2.imwrite("test_rasm.jpg", img)
 
-            assert 1100 < x1 < 1400, "Xato"
-            assert 800 < y1 < 1000, "Xato"
-            assert 1200 < y2 < 1600, "Xato"
-            assert 900 < y2 < 1200, "Xato"
+            assert 220 < x1 < 320, "Xato"
+            assert 150 < y1 < 250, "Xato"
+            assert 300 < x2 < 400, "Xato"
+            assert 200 < y2 < 350, "Xato"
