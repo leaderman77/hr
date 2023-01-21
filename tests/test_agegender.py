@@ -1,8 +1,3 @@
-import os.path
-
-import cv2
-import numpy as np
-from hr import HR
 import cv2
 import os.path
 
@@ -19,10 +14,6 @@ def test_agegender():
     -------
     None
     """
-    hr = HR()
-    img1_path = "../tests/embedding/1_1_1_2022-10-09-17-32-26.jpg"
-    assert os.path.isfile(img1_path), "fayl yo'q"
-
     hr = HR(option_list=["ag"])
     img1_path = os.path.join(
         PROJECT_DIR, "tests", "embedding", "1_1_1_2022-10-09-17-32-26.jpg"

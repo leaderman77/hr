@@ -1,5 +1,3 @@
-from insightface.app import FaceAnalysis
-from insightface.model_zoo import ArcFaceONNX, Attribute
 import os
 
 from insightface.app import FaceAnalysis
@@ -16,20 +14,6 @@ class HR:
         option_list=["emb"],
     ):
         self.option_list = option_list
-        if "emb" in self.option_list:
-            self.app = FaceAnalysis(allowed_modules=[module])
-            self.app.prepare(ctx_id=0, det_size=det_size, det_thresh=det_thresh)
-            assets_dir = os.path.expanduser("~/.insightface/models/buffalo_l")
-            model_path = os.path.join(assets_dir, "w600k_r50.onnx")
-            self.arcFace = ArcFaceONNX(model_path)
-            self.arcFace.prepare(0)
-
-        # agegender uchun kerakli
-        assets_dir = os.path.expanduser("~/.insightface/models/buffalo_l")
-        agegender_path = os.path.join(assets_dir, "genderage.onnx")
-        self.ag = Attribute(model_file=agegender_path)
-        self.ag.prepare(0)
-
         self.app = FaceAnalysis(allowed_modules=[module])
         self.app.prepare(ctx_id=0, det_size=det_size, det_thresh=det_thresh)
         assets_dir = os.path.expanduser("~/.insightface/models/buffalo_l")
