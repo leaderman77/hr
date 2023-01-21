@@ -66,7 +66,7 @@ class CameraProcessor:
             Dictionary containing face data in JSON format.
         """
 
-        bbox, kps, crop_face_img = face
+        bbox, kps, crop_face_img, img_shape = face
 
         x1 = int(bbox[0])
         y1 = int(bbox[1])
@@ -94,11 +94,89 @@ class CameraProcessor:
         b_crop_shape["w"] = crop_face_img[1]
         b_crop_shape["c"] = crop_face_img[2]
 
+        # orginal img shape
+        b_org_shape = {}
+        b_org_shape["h"] = img_shape[0]
+        b_org_shape["w"] = img_shape[1]
+        b_org_shape["c"] = img_shape[2]
+
         # har bir topilgan yuz uchun
         obj = {}
         obj["bbox"] = b_box
         obj["kps"] = b_kps
         obj["crop_shape"] = b_crop_shape
+        obj["img_shape"] = b_org_shape
+
+        det_result = {}
+        det_result["person"] = obj
+
+        json_data = json.dumps(det_result)
+        return json_data
+
+    def ag2json(self, face):
+        """
+        Convert face data to JSON format.
+
+        Parameters
+        ----------
+        face : object
+            Object containing face data.
+
+        Returns
+        -------
+        json_data : dict
+            Dictionary containing face data in JSON format.
+        """
+        bbox, kps, crop_face_img, gender, age, img_shape = face
+
+        x1 = int(bbox[0])
+        y1 = int(bbox[1])
+        x2 = int(bbox[2])
+        y2 = int(bbox[3])
+
+        # bbox
+        b_box = {}
+        b_box["x1"] = x1
+        b_box["y1"] = y1
+        b_box["x2"] = x2
+        b_box["y2"] = y2
+
+        # kps
+        b_kps = {}
+        b_kps["right_eye"] = (int(kps[0][0]), int(kps[0][1]))
+        b_kps["left_eye"] = (int(kps[1][0]), int(kps[1][1]))
+        b_kps["nose"] = (int(kps[2][0]), int(kps[2][1]))
+        b_kps["right_lip"] = (int(kps[3][0]), int(kps[3][1]))
+        b_kps["left_lip"] = (int(kps[4][0]), int(kps[4][1]))
+
+        # crop img shape
+        b_crop_shape = {}
+        b_crop_shape["h"] = crop_face_img[0]
+        b_crop_shape["w"] = crop_face_img[1]
+        b_crop_shape["c"] = crop_face_img[2]
+
+        # orginal img shape
+        b_org_shape = {}
+        b_org_shape["h"] = img_shape[0]
+        b_org_shape["w"] = img_shape[1]
+        b_org_shape["c"] = img_shape[2]
+
+        # gender
+        b_gender = {}
+        b_gender["gender"] = gender
+
+        # age
+        b_age = {}
+        b_age["age"] = age
+
+        # har bir topilgan yuz uchun
+        obj = {}
+        obj["bbox"] = b_box
+        obj["kps"] = b_kps
+        obj["crop_shape"] = b_crop_shape
+        obj["gender"] = b_gender
+        obj["age"] = b_age
+        obj["img_shape"] = b_org_shape
 
         det_result = {}
         det_result["person"] = obj
@@ -154,9 +232,9 @@ class CameraProcessor:
 
         # orginal img shape
         b_org_shape = {}
-        b_org_shape["h"] = crop_face_img[0]
-        b_org_shape["w"] = crop_face_img[1]
-        b_org_shape["c"] = crop_face_img[2]
+        b_org_shape["h"] = img_shape[0]
+        b_org_shape["w"] = img_shape[1]
+        b_org_shape["c"] = img_shape[2]
 
         # har bir topilgan yuz uchun
         obj = {}
@@ -164,6 +242,82 @@ class CameraProcessor:
         obj["kps"] = b_kps
         obj["crop_shape"] = b_crop_shape
         obj["embedding"] = b_embedding
+        obj["org_shape"] = b_org_shape
+
+        det_result = {}
+        det_result["person"] = obj
+
+        json_data = json.dumps(det_result)
+        return json_data
+
+    def all2json(self, face):
+        """
+        Convert face data to JSON format.
+
+        Parameters
+        ----------
+        face : object
+            Object containing face data.
+
+        Returns
+        -------
+        json_data : dict
+            Dictionary containing face data in JSON format.
+        """
+        bbox, kps, embedding, gender, age, crop_face_img, img_shape = face
+
+        x1 = int(bbox[0])
+        y1 = int(bbox[1])
+        x2 = int(bbox[2])
+        y2 = int(bbox[3])
+
+        # bbox
+        b_box = {}
+        b_box["x1"] = x1
+        b_box["y1"] = y1
+        b_box["x2"] = x2
+        b_box["y2"] = y2
+
+        # kps
+        b_kps = {}
+        b_kps["right_eye"] = (int(kps[0][0]), int(kps[0][1]))
+        b_kps["left_eye"] = (int(kps[1][0]), int(kps[1][1]))
+        b_kps["nose"] = (int(kps[2][0]), int(kps[2][1]))
+        b_kps["right_lip"] = (int(kps[3][0]), int(kps[3][1]))
+        b_kps["left_lip"] = (int(kps[4][0]), int(kps[4][1]))
+
+        # embedding
+        b_embedding = {}
+        b_embedding["embedding_vek"] = embedding
+
+        # gender
+        b_gender = {}
+        b_gender["gender"] = gender
+
+        # age
+        b_age = {}
+        b_age["age"] = age
+
+        # crop img shape
+        b_crop_shape = {}
+        b_crop_shape["h"] = crop_face_img[0]
+        b_crop_shape["w"] = crop_face_img[1]
+        b_crop_shape["c"] = crop_face_img[2]
+
+        # orginal img shape
+        b_org_shape = {}
+        b_org_shape["h"] = img_shape[0]
+        b_org_shape["w"] = img_shape[1]
+        b_org_shape["c"] = img_shape[2]
+
+        # har bir topilgan yuz uchun
+        obj = {}
+        obj["bbox"] = b_box
+        obj["kps"] = b_kps
+        obj["embedding"] = b_embedding
+        obj["gender"] = b_gender
+        obj["age"] = b_age
+        obj["crop_shape"] = b_crop_shape
         obj["org_shape"] = b_org_shape
 
         det_result = {}
@@ -222,6 +376,12 @@ class CameraProcessor:
         if "emb" in self.option_list:
             faces = self.app.arcFace(image)
             convert2json = self.emb2json
+        elif "ag" in self.option_list:
+            faces = self.app.ag(image)
+            convert2json = self.ag2json
+        elif "all" in self.option_list:
+            faces = self.app.get_face_data(image)
+            convert2json = self.all2json
         else:
             faces = self.app.detection(image)
             convert2json = self.det2json

@@ -21,8 +21,8 @@ def test_agegender():
     assert os.path.isfile(img1_path), "fayl yo'q"
     img1 = cv2.imread(img1_path)
     face_data = hr.agegender(img1)  # [[1, 26]]
-    gender = face_data[0][0]  # [1, 26][0] --> 1
-    age = face_data[0][1]  # [1, 26][1] --> 26
+    gender = face_data[0][3]  # [1, 26][0] --> 1
+    age = face_data[0][4]  # [1, 26][1] --> 26
 
     assert gender == 1, "Genderda xatolik."
     assert age == 26, "Yoshda xatolik."
