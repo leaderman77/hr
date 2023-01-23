@@ -25,6 +25,13 @@ class HR:
             agegender_path = os.path.join(assets_dir, "genderage.onnx")
             self.ag = Attribute(model_file=agegender_path)
             self.ag.prepare(0)
+        if "all" in self.option_list:
+            model_path = os.path.join(assets_dir, "w600k_r50.onnx")
+            self.arcFace = ArcFaceONNX(model_path)
+            self.arcFace.prepare(0)
+            agegender_path = os.path.join(assets_dir, "genderage.onnx")
+            self.ag = Attribute(model_file=agegender_path)
+            self.ag.prepare(0)
 
     def detection(self, img):
         """
@@ -48,7 +55,7 @@ class HR:
             crop_img = img[y1:y2, x1:x2]
 
             # rasm koordinatalari shu yerda aniqlanadi
-            all_detect_faces.append([face.bbox, face.kps, crop_img.shape])
+            all_detect_faces.append([face.bbox, face.kps, crop_img.shape, img.shape])
 
         return all_detect_faces
 
@@ -89,11 +96,11 @@ class HR:
             face_data.append(
                 [face.bbox, face.kps, embedding, gender, age, crop.shape, img.shape]
             )
-        return face_data[0]
+        return face_data
 
     def agegender(self, img):
         """
-        Berilgan rasmdan yuzlarni aniqlab, uni yoshi va jinisi aniqlab qaytaradi
+        Berilgan rasmdan yuzlarni aniqlab, uni yoshi va jinsini aniqlab qaytaradi
 
         Parameters
         ----------
@@ -110,8 +117,15 @@ class HR:
 
         face_data = []
         for face in faces:
+            x1 = int(face["bbox"][0])
+            y1 = int(face["bbox"][1])
+            x2 = int(face["bbox"][2])
+            y2 = int(face["bbox"][3])
+            crop_img = img[y1:y2, x1:x2]
             gender, age = self.ag.get(img, face)
-            face_data.append([gender, age])
+            face_data.append(
+                [face.bbox, face.kps, crop_img.shape, gender, age, img.shape]
+            )
         return face_data
 
     def embeding(self, img):
