@@ -19,4 +19,4 @@ def test_face_data():
     img_path = os.path.join(root_emb_data, "1_1_1_2022-10-09-17-32-26.jpg")
     img = cv2.imread(img_path)
     face_data = hr.get_face_data(img)
-    assert len(face_data) == 7, "List itemlarida muammo bor"
+    assert len(face_data[0]) == 7, "List itemlarida muammo bor"

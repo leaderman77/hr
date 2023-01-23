@@ -96,7 +96,7 @@ class HR:
             face_data.append(
                 [face.bbox, face.kps, embedding, gender, age, crop.shape, img.shape]
             )
-        return face_data[0]
+        return face_data
 
     def agegender(self, img):
         """
