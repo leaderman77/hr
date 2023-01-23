@@ -4,7 +4,7 @@
     ```shell
     conda install -c conda-forge mamba
     mamba env create -f environment_fix.yml
-    conda activate cradle_hr
+    conda activate cradle_hr2
     pip install -e .
     pre-commit install
     ```
