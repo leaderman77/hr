@@ -1,4 +1,4 @@
-name: cradle_hr2
+name: cradle_hr
 channels:
   - conda-forge
   - anaconda
