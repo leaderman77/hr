@@ -100,7 +100,7 @@ class HR:
 
     def agegender(self, img):
         """
-        Berilgan rasmdan yuzlarni aniqlab, uni yoshi va jinisi aniqlab qaytaradi
+        Berilgan rasmdan yuzlarni aniqlab, uni yoshi va jinsini aniqlab qaytaradi
 
         Parameters
         ----------
