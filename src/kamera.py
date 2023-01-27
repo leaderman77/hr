@@ -5,12 +5,18 @@ import base64
 import datetime
 import time
 import json
-
+import jsonpickle
 from hr import HR
+
+# import os
+# from decouple import AutoConfig
+#
+# CONFIG_DIR = os.path.join(os.path.dirname(__file__), "config")
+# config = AutoConfig(search_path=CONFIG_DIR)
 
 
 class CameraProcessor:
-    def __init__(self, config, option_list=["emb"]):
+    def __init__(self, config, option_list=["all"]):
         self.config = config
         self.option_list = option_list
         self.app = HR(option_list=self.option_list)
@@ -34,6 +40,12 @@ class CameraProcessor:
         )
         endX, endY = int(self.config("endX")), int(self.config("endX"))
         return frame[startY:endY, startX:endX]
+
+    def to_float(self, dct):
+        for k, v in dct.items():
+            if type(v) is float:
+                dct[k] = round(v, 2)
+        return dct
 
     def get_diagonal(self, bbox):
         """
@@ -288,15 +300,15 @@ class CameraProcessor:
 
         # embedding
         b_embedding = {}
-        b_embedding["embedding_vek"] = embedding
+        b_embedding["embedding_vek"] = str(list(embedding))
 
         # gender
         b_gender = {}
-        b_gender["gender"] = gender
+        b_gender["gender_f"] = int(gender)
 
         # age
         b_age = {}
-        b_age["age"] = age
+        b_age["age_f"] = age
 
         # crop img shape
         b_crop_shape = {}
@@ -322,8 +334,7 @@ class CameraProcessor:
 
         det_result = {}
         det_result["person"] = obj
-
-        json_data = json.dumps(det_result)
+        json_data = json.dumps(jsonpickle.encode(det_result))
         return json_data
 
     def send_image(self, image, facedata):
@@ -404,7 +415,9 @@ class CameraProcessor:
         """
         while True:
             try:
+                # _path = "../tests/embedding/2022-11-02 18_59_59.jpg"
                 image = self.get_image()
+                # image = cv2.imread(_path)
                 self.analyze_faces(image)
                 key = cv2.waitKey(1) & 0xFF
                 if key == ord("q"):
