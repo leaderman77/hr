@@ -1,7 +1,23 @@
 # Papkalarda rasmlar sonini aniqlash
 
 ## [merchent_1](https://drive.google.com/drive/folders/18A2Ehy1_ZwvIdjRTQ-4alojpUGQOZ3OE)
-### camera_1
+
+### camera_1(orginal)
+
+| Fayl nomi     | Rasmlar soni |
+|---------------|--------------|
+| 2022-10-09    | 5            |
+| 2022-10-10    | 8            |
+| 2022-11-02    | 55           |
+| 2022-11-03    | 282          |
+| 2022-11-04    | 638          |
+| 2022-11-05    | 5            |
+| 2022-11-07    | 201          |
+| 2022-11-09    | 1            |
+| Jami camera_1 | 1195         |
+
+### camera_1_(cleaned)
+
 | Fayl nomi     | Rasmlar soni |
 |---------------|--------------|
 | 2022-10-10    | 2            |
@@ -12,8 +28,21 @@
 | 2022-11-07    | 86           |
 | Jami camera_1 | 428          |
 
+### camera_2_(orginal)
 
-### camera_2
+| Fayl nomi     | Rasmlar soni |
+|---------------|--------------|
+| 2022-10-10    | 13           |
+| 2022-11-02    | 22           |
+| 2022-11-03    | 179          |
+| 2022-11-04    | 373          |
+| 2022-11-05    | 5            |
+| 2022-11-07    | 145          |
+| 2022-11-09    | 4            |
+| Jami camera_2 | 741          |
+
+### camera_2_(cleaned)
+
 | Fayl nomi     | Rasmlar soni |
 |---------------|--------------|
 | 2022-10-10    | 2            |
