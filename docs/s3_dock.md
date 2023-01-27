@@ -1,8 +1,8 @@
-# Papkalarda rasmlar sonini aniqlash
+# S3_row_data
 
-## [s3_v0.0.1](https://drive.google.com/drive/folders/18A2Ehy1_ZwvIdjRTQ-4alojpUGQOZ3OE)
+## [s3_v0.0.1(orginal)](https://drive.google.com/drive/folders/18A2Ehy1_ZwvIdjRTQ-4alojpUGQOZ3OE)
 
-### camera_1(orginal)
+### camera_1
 
 | Fayl nomi     | Rasmlar soni |
 |---------------|--------------|
@@ -18,7 +18,7 @@
 
 
 
-### camera_2_(orginal)
+### camera_2
 
 | Fayl nomi     | Rasmlar soni |
 |---------------|--------------|
@@ -31,8 +31,8 @@
 | 2022-11-09    | 4            |
 | Jami camera_2 | 741          |
 
-## [s3_v0.1.0](https://drive.google.com/drive/folders/18A2Ehy1_ZwvIdjRTQ-4alojpUGQOZ3OE)
-### camera_1_(cleaned)
+## [s3_v0.1.1(cleaned)](https://drive.google.com/drive/folders/18A2Ehy1_ZwvIdjRTQ-4alojpUGQOZ3OE)
+### camera_1
 
 | Fayl nomi     | Rasmlar soni |
 |---------------|--------------|
@@ -44,7 +44,7 @@
 | 2022-11-07    | 86           |
 | Jami camera_1 | 428          |
 
-### camera_2_(cleaned)
+### camera_2
 
 | Fayl nomi     | Rasmlar soni |
 |---------------|--------------|
