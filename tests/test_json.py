@@ -19,10 +19,14 @@ def test_json():
     -------
     Agar oldingan salqangan json fayl bilan berilgan rasmdan olingan json file ustam ust tushsa testdan o'tgan bo'ladi
     """
-    with open("../tests/output.json") as f:
+    root_json_data = os.path.join(PROJECT_DIR, "tests")
+    json_path = os.path.join(root_json_data, "output.json")
+    with open(json_path) as f:
         expected = json.load(f)
 
-    _path = "embedding/2022-11-02 18_59_59.jpg"
+    root_emb_data = os.path.join(PROJECT_DIR, "tests", "embedding")
+    _path = os.path.join(root_emb_data, "2022-11-02 18_59_59.jpg")
+    # _path = "embedding/2022-11-02 18_59_59.jpg"
     image = cv2.imread(_path)
     app = HR(option_list=["all"])
     faces = app.get_face_data(image)
