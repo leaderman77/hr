@@ -8,12 +8,6 @@ import json
 import jsonpickle
 from hr import HR
 
-# import os
-# from decouple import AutoConfig
-#
-# CONFIG_DIR = os.path.join(os.path.dirname(__file__), "config")
-# config = AutoConfig(search_path=CONFIG_DIR)
-
 
 class CameraProcessor:
     def __init__(self, config, option_list=["all"]):
@@ -40,12 +34,6 @@ class CameraProcessor:
         )
         endX, endY = int(self.config("endX")), int(self.config("endX"))
         return frame[startY:endY, startX:endX]
-
-    def to_float(self, dct):
-        for k, v in dct.items():
-            if type(v) is float:
-                dct[k] = round(v, 2)
-        return dct
 
     def get_diagonal(self, bbox):
         """
@@ -362,12 +350,6 @@ class CameraProcessor:
             },
         )
         print(response.status_code)
-        # print("merchant_id: ",int(self.config("MERCHANT_ID")))
-        # print("location_id: ",int(self.config("LOCATION_ID")))
-        # print("camera_id: ",int(self.config("CAMERA_ID")))
-        # print("timestamp: ",f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}")
-        # print("frame: ",str(base64.encodebytes(img_encoded), "utf-8"))
-        # print("facedata: ",self.face2json(face))
         time.sleep(int(self.config("PER_SECOND")))
 
     def analyze_faces(self, image):
@@ -415,9 +397,7 @@ class CameraProcessor:
         """
         while True:
             try:
-                # _path = "../tests/embedding/2022-11-02 18_59_59.jpg"
                 image = self.get_image()
-                # image = cv2.imread(_path)
                 self.analyze_faces(image)
                 key = cv2.waitKey(1) & 0xFF
                 if key == ord("q"):
