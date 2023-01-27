@@ -325,7 +325,72 @@ class CameraProcessor:
         json_data = json.dumps(jsonpickle.encode(det_result))
         return json_data
 
-    def send_image(self, image, facedata):
+    def get_obj(self, face):
+        """
+        Convert face data to JSON format.
+
+        Parameters
+        ----------
+        face : object
+            Object containing face data.
+
+        Returns
+        -------
+        json_data : dict
+            Dictionary containing face data in JSON format.
+        """
+        bbox, kps, embedding, gender, age, crop_face_img, img_shape = face
+
+        x1 = int(bbox[0])
+        y1 = int(bbox[1])
+        x2 = int(bbox[2])
+        y2 = int(bbox[3])
+
+        # bbox
+        b_box = {}
+        b_box["x1"] = x1
+        b_box["y1"] = y1
+        b_box["x2"] = x2
+        b_box["y2"] = y2
+
+        # kps
+        b_kps = {}
+        b_kps["right_eye"] = [int(kps[0][0]), int(kps[0][1])]
+        b_kps["left_eye"] = [int(kps[1][0]), int(kps[1][1])]
+        b_kps["nose"] = [int(kps[2][0]), int(kps[2][1])]
+        b_kps["right_lip"] = [int(kps[3][0]), int(kps[3][1])]
+        b_kps["left_lip"] = [int(kps[4][0]), int(kps[4][1])]
+
+        # embedding
+        b_embedding = {}
+        b_embedding["embedding_vek"] = jsonpickle.encode(embedding.tolist())
+
+        # gender
+        b_gender = {}
+        b_gender["gender_f"] = int(gender)
+
+        # age
+        b_age = {}
+        b_age["age_f"] = age
+
+        # crop img shape
+        b_crop_shape = {}
+        b_crop_shape["h"] = crop_face_img[0]
+        b_crop_shape["w"] = crop_face_img[1]
+        b_crop_shape["c"] = crop_face_img[2]
+
+        # har bir topilgan yuz uchun
+        obj = {}
+        obj["bbox"] = b_box
+        obj["kps"] = b_kps
+        obj["embedding"] = b_embedding
+        obj["gender"] = b_gender
+        obj["age"] = b_age
+        obj["shape"] = b_crop_shape
+
+        return obj
+
+    def send_image(self, image, facedata, obj_count):
         """
         Send image and face data to the API.
 
@@ -347,8 +412,11 @@ class CameraProcessor:
                 "timestamp": f"{datetime.datetime.now():%Y-%m-%d-%H:%M:%S}",
                 "frame": str(base64.encodebytes(img_encoded), "utf-8"),
                 "facedata": facedata,
+                "object_count": obj_count,
+                "img_shape": image.shape,
             },
         )
+
         print(response.status_code)
         time.sleep(int(self.config("PER_SECOND")))
 
@@ -379,12 +447,17 @@ class CameraProcessor:
             faces = self.app.detection(image)
             convert2json = self.det2json
 
-        for face in faces:
-            bbox = face[0]
+        facedata = {}
+        for i in range(len(faces)):
+            bbox = faces[i][0]
             diagonal = self.get_diagonal(bbox)
             if dioganal_min < diagonal < dioganal_max:
-                facedata = convert2json(face)
-                self.send_image(image, facedata)
+                facedata[str(i)] = self.get_obj(faces[i])
+        # print(facedata)
+        objects = {}
+        objects["objects"] = facedata
+        json_data = json.dumps(jsonpickle.encode(objects))
+        self.send_image(image, json_data, len(faces))
 
     def process(self):
         """
@@ -407,7 +480,7 @@ class CameraProcessor:
         cv2.destroyAllWindows()
 
 
-# # ishlatilishiqq
+# ishlatilishiqq
 # processor = CameraProcessor(config)
 # while True:
 #     try:

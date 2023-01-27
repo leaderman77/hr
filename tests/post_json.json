@@ -1,0 +1,33 @@
+{
+  "timestamp": "vaqt toliq",
+  "object_count": 3,
+  "objects":
+      {
+        "0": {
+          "b_box": [],
+          "kps": [],
+          "age": 22,
+          "gender": 1,
+          "embedding": [1.232,0.01],
+          "shape": []
+              },
+        "1": {
+          "b_box": [],
+          "kps": [],
+          "age": 22,
+          "gender": 1,
+          "embedding": [1.232,0.01],
+          "shape": []
+              },
+        "2": {
+          "b_box": [],
+          "kps": [],
+          "age": 22,
+          "gender": 1,
+          "embedding": [1.232,0.01],
+          "shape": []
+              }
+      },
+  "img_shape": [],
+  "img": "strinng"
+}
