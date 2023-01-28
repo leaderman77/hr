@@ -17,7 +17,7 @@ def test_json():
 
     Returns
     -------
-    Agar oldingan salqangan json fayl bilan berilgan rasmdan olingan json file ustam ust tushsa testdan o'tgan bo'ladi
+    Agar oldindan saqlangan json fayl bilan berilgan rasmdan olingan json file ustam ust tushsa testdan o'tgan bo'ladi
     """
     root_json_data = os.path.join(PROJECT_DIR, "tests")
     json_path = os.path.join(root_json_data, "output.json")
