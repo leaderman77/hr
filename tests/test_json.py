@@ -14,9 +14,6 @@ PROJECT_DIR = project_dir()
 
 def test_json():
     """
-
-    Returns
-    -------
     Agar oldindan saqlangan json fayl bilan berilgan rasmdan olingan json file ustam ust tushsa testdan o'tgan bo'ladi
     """
     root_json_data = os.path.join(PROJECT_DIR, "tests")
@@ -26,7 +23,6 @@ def test_json():
 
     root_emb_data = os.path.join(PROJECT_DIR, "tests", "embedding")
     _path = os.path.join(root_emb_data, "2022-11-02 18_59_59.jpg")
-    # _path = "embedding/2022-11-02 18_59_59.jpg"
     image = cv2.imread(_path)
     app = HR(option_list=["all"])
     faces = app.get_face_data(image)
