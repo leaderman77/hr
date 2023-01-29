@@ -9,9 +9,13 @@ from utils import project_dir
 PROJECT_DIR = project_dir()
 
 
-def test_det():
+def nom_uzgartir(nom):
+    return nom[0 : len(nom) - 4] + "_det" + nom[len(nom) - 4 :]
+
+
+def det():
     """
-    Yuzni aniqlashni test qilish:
+    Rasmlardan yuzlarni aniqlash:
         - berilgan path bo'yicha barcha .jpg rasmlarni load qiladi
         - topilgan har bir yuz uchun yuz atrofida to'rtburchak chiziladi
     """
@@ -22,14 +26,15 @@ def test_det():
         "s3_v0.1.1",
         "merchant_1",
         "location_1",
-        "camera_1",
     )
     for img_path in glob.glob(imgs_path):
+        img_path = "/home/ubuntuuser/proyektlar/hr/data/s3_v0.1.1/merchant_1/location_1/camera_1/2022-11-02/2022-11-02 18_58_54.jpg"
         img = cv2.imread(img_path)
+        print(img)
         det_data = hr.detection(img)
 
         for data in det_data:
-            bbox, kps, _shape, img_shape = data
+            bbox, kps, _shape = data
             x1 = int(bbox[0])
             y1 = int(bbox[1])
             x2 = int(bbox[2])
@@ -44,9 +49,7 @@ def test_det():
                 kps = kps.astype(np.int_)
                 for l in range(kps.shape[0]):
                     cv2.circle(img, (kps[l][0], kps[l][1]), 5, (0, 0, 255), -1)
-            # cv2.imwrite("test_rasm.jpg", img)
+            cv2.imwrite(nom_uzgartir(img_path), img)
 
-            assert 220 < x1 < 320, "Xato"
-            assert 150 < y1 < 250, "Xato"
-            assert 300 < x2 < 400, "Xato"
-            assert 200 < y2 < 350, "Xato"
+
+det()
