@@ -5,6 +5,21 @@ import jsonpickle
 import numpy as np
 
 
+def name_change(nom):
+    """
+    Appends "_det" to the end of the file name
+    Parameters
+    ----------
+    nom : vactor
+
+    Returns
+    -------
+    New name
+    """
+
+    return nom[0 : len(nom) - 4] + "_det" + nom[len(nom) - 4 :]
+
+
 def compute_sim(feat1, feat2):
     """Function to compute cosine similarity between two embedding vectors
 
