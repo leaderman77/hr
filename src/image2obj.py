@@ -14,8 +14,7 @@ def img_convertor(img_path):
     img = cv2.imread(img_path)
     faces = app.get_face_data(img)
     facedata = {}
-    index = 0
-    for face in faces:
+    for index, face in enumerate(faces):
         bbox, kps, embedding, gender, age, crop_face_img, img_shape = face
         obj = {}
         obj["embedding"] = jsonpickle.encode(embedding.tolist())
@@ -23,7 +22,6 @@ def img_convertor(img_path):
         obj["age"] = age
         obj["img_obj"] = jsonpickle.encode(bbox.tolist())
         facedata[str(index)] = obj
-        index = index + 1
     print(facedata)
 
 
