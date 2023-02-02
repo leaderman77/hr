@@ -14,7 +14,7 @@ class HR:
         option_list=["emb"],
     ):
         self.option_list = option_list
-        self.app = FaceAnalysis(allowed_modules=[module])
+        self.app = FaceAnalysis(allowed_modules=[module], name="buffalo_sc")
         self.app.prepare(ctx_id=0, det_size=det_size, det_thresh=det_thresh)
         assets_dir = os.path.expanduser("~/.insightface/models/buffalo_l")
         if "emb" in self.option_list:
@@ -242,6 +242,6 @@ class HR:
         return face_data
 
 
-# myHR = HR()
+myHR = HR()
 # myHR.agegender()
 # myHR.recognation()
