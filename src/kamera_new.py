@@ -412,24 +412,19 @@ class CameraProcessor:
         """
         _, img_encoded = cv2.imencode(".jpg", image)
         api_url = self.config("TEST_URL")
-        headers = {"Content-Type": "image/jpeg"}
-        files = {
-            "frame": open("../tests/embedding/2022-11-02 18_59_59.jpg", "rb").read()
-        }
+        headers = {"Content-Type": "multipart/form-data"}
+
         response = requests.post(
             api_url,
-            auth=("admin", "secret"),
-            files=files,
             data={
                 "merchant_id": int(self.config("MERCHANT_ID")),
-                "merchant_key": self.config("MERCHANT_KEY"),
+                "key": int(self.config("MERCHANT_KEY")),
                 "location_id": int(self.config("LOCATION_ID")),
                 "camera_id": int(self.config("CAMERA_ID")),
                 "timestamp": f"{datetime.datetime.now():%Y-%m-%d-%H:%M:%S}",
-                # "frame": open("../tests/embedding/2022-11-02 18_59_59.jpg", 'rb').read(),
+                "img": open("../tests/embedding/2022-11-02 18_59_59.jpg", "rb"),
                 # "frame": str(base64.encodebytes(img_encoded), "utf-8"),
             },
-            headers=headers,
             verify=False,
         )
 
