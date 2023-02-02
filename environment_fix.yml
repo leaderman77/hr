@@ -1,4 +1,4 @@
-name: cradle_hr2
+name: cradle_hr
 channels:
   - conda-forge
   - anaconda
@@ -99,3 +99,4 @@ dependencies:
     - typing-extensions==4.4.0
     - urllib3==1.26.13
     - wcwidth==0.2.5
+    - jsonpickle==3.0.1

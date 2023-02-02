@@ -25,7 +25,7 @@ def test_det():
         det_data = hr.detection(img)
 
         for data in det_data:
-            bbox, kps, _shape = data
+            bbox, kps, _shape, img_shape = data
             x1 = int(bbox[0])
             y1 = int(bbox[1])
             x2 = int(bbox[2])
