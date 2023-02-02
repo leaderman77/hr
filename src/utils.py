@@ -1,5 +1,6 @@
 import os
 import math
+import cv2 as cv
 import jsonpickle
 import numpy as np
 
@@ -118,3 +119,65 @@ def get_obj(face):
     obj["shape"] = b_crop_shape
 
     return obj
+
+
+def resize_face(crop_img, crop_kps, target_size=(112, 112)):
+    """Function to resize cropped face, face's kps to the desired size
+
+    Parameters
+    ----------
+    crop_img : obj:`Array`
+        cropped face image
+    crop_kps : obj:`Array`
+        adjusted kps according to cropped face
+    target_size : obj:`Tuple`
+        object contains target size for resizing
+
+    Returns
+    -------
+    The method returns resized crop image & resized kps
+    """
+
+    resized_crop = cv.resize(crop_img, target_size)
+    ratio_x = target_size[0] / float(crop_img.shape[1])
+    ratio_y = target_size[1] / float(crop_img.shape[0])
+    crop_kps[:, 0] *= ratio_x
+    crop_kps[:, 1] *= ratio_y
+
+    return resized_crop, crop_kps
+
+
+def crop_face(img, kps, bbox):
+    """Function to crop face img & obtain cropped img kps
+
+    Parameters
+    ----------
+    img : obj:`Array`
+        input location image
+    kps : obj:`Array`
+        face kps found on loc image
+    bbox : obj:`Array`
+        face bbox found on loc image
+
+    Returns
+    -------
+    The method returns cropped face image & adjusted kps
+    """
+
+    x1 = int(bbox[0])
+    y1 = int(bbox[1])
+    x2 = int(bbox[2])
+    y2 = int(bbox[3])
+    crop_img = img[y1:y2, x1:x2]
+
+    # recalculate kps for cropped img
+    crop_kps = []
+    for i in range(5):
+        kps_1 = kps[i][0] - x1
+        kps_2 = kps[i][1] - y1
+        crop_kps.append([kps_1, kps_2])
+
+    # converting list to np array
+    crop_kps = np.array(crop_kps)
+
+    return crop_img, crop_kps

@@ -1,5 +1,5 @@
 import os
-
+from utils import resize_face, crop_face
 from insightface.app import FaceAnalysis
 from insightface.utils import face_align
 from insightface.model_zoo import ArcFaceONNX, Attribute
@@ -152,7 +152,6 @@ class HR:
 
         face_embeddings = []
         for face in faces:
-
             # Get the face embedding vector
             embedding = self.arcFace.get(img, face)
 
@@ -164,6 +163,63 @@ class HR:
             # collect bboxes, kpss, embeddings, crop shape, img shape
             face_embeddings.append(
                 [face.bbox, face.kps, embedding, crop_face_img.shape, img.shape]
+            )
+
+        return face_embeddings
+
+    def get_embedding_by_crop_img(self, img):
+        """Class method on getting face embeddings based on cropped image
+
+        Analyses the given image and crop detected face and scale it
+        to size w112 h 112. Recalculates bbox and kps for new crop img
+        and sets them to face[i]. Converts each detected face in the image
+        into 512-d numerical vectors. Generated embedding is applied for
+        face.embedding list
+
+        Parameters
+        ----------
+        img : :obj:`Unit8`
+            Input parameter. Image
+        Returns
+        -------
+        The method returns list of cropped img faces' bbox, kps, embeddings,
+        cropped img and its shape and input img's shape
+        """
+
+        face_embeddings = []
+
+        # get faces
+        faces = self.app.get(img)
+
+        for face in faces:
+            # get cropped img, adjusted kps
+            crop_img, adjusted_kps = crop_face(img, face.kps, face.bbox)
+
+            # resize crop image and crop kps - w 112 h 112
+            resized_crop, resized_kps = resize_face(crop_img, adjusted_kps)
+
+            # set recalculated bbox to face[i]
+            face["bbox"][0] = 0
+            face["bbox"][1] = 0
+            face["bbox"][2] = 112
+            face["bbox"][3] = 112
+
+            # set recalculated kps to face[i]
+            face["kps"] = resized_kps
+
+            # generate the face embedding vector
+            crop_embedding = self.arcFace.get(resized_crop, face)
+
+            # return parameters
+            face_embeddings.append(
+                [
+                    face.bbox,
+                    face.kps,
+                    crop_embedding,
+                    resized_crop,
+                    resized_crop.shape,
+                    img.shape,
+                ]
             )
 
         return face_embeddings
