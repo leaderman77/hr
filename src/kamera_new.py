@@ -6,6 +6,13 @@ import datetime
 import time
 import json
 import jsonpickle
+import os
+from decouple import AutoConfig
+
+CONFIG_DIR = os.path.join(os.path.dirname(__file__), "config")
+config = AutoConfig(search_path=CONFIG_DIR)
+
+from insightface.app import FaceAnalysis
 from hr import HR
 
 
@@ -13,7 +20,8 @@ class CameraProcessor:
     def __init__(self, config, option_list=["det"]):
         self.config = config
         self.option_list = option_list
-        self.app = HR(option_list=self.option_list)
+        self.app = FaceAnalysis(allowed_modules=["detection"], name="buffalo_sc")
+        self.app.prepare(ctx_id=0, det_size=(640, 640), det_thresh=0.5)
         cam_path = config("CAMERA_PATH")
         if config("CAMERA_PATH") == "0":
             cam_path = int(config("CAMERA_PATH"))
@@ -29,11 +37,12 @@ class CameraProcessor:
             The extracted image.
         """
         ret, frame = self.cap.read()
-        startX, startY = self.config("startX", cast=int), self.config(
-            "startY", cast=int
-        )
-        endX, endY = int(self.config("endX")), int(self.config("endX"))
-        return frame[startY:endY, startX:endX]
+        # startX, startY = self.config("startX", cast=int), self.config(
+        #     "startY", cast=int
+        # )
+        # endX, endY = int(self.config("endX")), int(self.config("endX"))
+        # return frame[startY:endY, startX:endX]
+        return frame
 
     def get_diagonal(self, bbox):
         """
@@ -403,16 +412,25 @@ class CameraProcessor:
         """
         _, img_encoded = cv2.imencode(".jpg", image)
         api_url = self.config("TEST_URL")
+        headers = {"Content-Type": "image/jpeg"}
+        files = {
+            "frame": open("../tests/embedding/2022-11-02 18_59_59.jpg", "rb").read()
+        }
         response = requests.post(
             api_url,
+            auth=("admin", "secret"),
+            files=files,
             data={
                 "merchant_id": int(self.config("MERCHANT_ID")),
                 "merchant_key": self.config("MERCHANT_KEY"),
                 "location_id": int(self.config("LOCATION_ID")),
                 "camera_id": int(self.config("CAMERA_ID")),
                 "timestamp": f"{datetime.datetime.now():%Y-%m-%d-%H:%M:%S}",
-                "frame": str(base64.encodebytes(img_encoded), "utf-8"),
+                # "frame": open("../tests/embedding/2022-11-02 18_59_59.jpg", 'rb').read(),
+                # "frame": str(base64.encodebytes(img_encoded), "utf-8"),
             },
+            headers=headers,
+            verify=False,
         )
 
         print(response.status_code)
@@ -432,14 +450,13 @@ class CameraProcessor:
         dioganal_min = int(self.config("DIOGANAL_MIN"))
         dioganal_max = int(self.config("DIOGANAL_MAX"))
 
-        faces = self.app.detection(image)
+        faces = self.app.get(image)
 
-        for i in range(len(faces)):
-            bbox = faces[i][0]
-            diagonal = self.get_diagonal(bbox)
+        for face in faces:
+            print("face bor!")
+            diagonal = self.get_diagonal(face.bbox)
             if dioganal_min < diagonal < dioganal_max:
                 self.send_image(image)
-                break
 
     def process(self):
         """
@@ -452,20 +469,26 @@ class CameraProcessor:
         """
         while True:
             try:
-                image = self.get_image()
+                # image = self.get_image()
+                _path = "../tests/embedding/2022-11-02 18_59_59.jpg"
+                image = cv2.imread(_path)
+                # faces = self.app.get(image)
+                # rimg = self.app.draw_on(image, faces)
                 self.analyze_faces(image)
                 key = cv2.waitKey(1) & 0xFF
                 if key == ord("q"):
                     break
+                # cv2.imshow("frame", rimg)
+
             except Exception as ex:
                 print("xatolik ", ex)
         cv2.destroyAllWindows()
 
 
 # ishlatilishiqq
-# processor = CameraProcessor(config)
-# while True:
-#     try:
-#         processor.process()
-#     except Exception as ex:
-#         print("xatolik ", ex)
+processor = CameraProcessor(config)
+while True:
+    try:
+        processor.process()
+    except Exception as ex:
+        print("xatolik ", ex)
