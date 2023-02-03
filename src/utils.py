@@ -10,11 +10,11 @@ def name_change(nom):
     Appends "_det" to the end of the file name
     Parameters
     ----------
-    nom : vactor
+    nom : str
 
     Returns
     -------
-    New name
+    str
     """
 
     return nom[0 : len(nom) - 4] + "_det" + nom[len(nom) - 4 :]

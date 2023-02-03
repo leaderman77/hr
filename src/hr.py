@@ -53,9 +53,10 @@ class HR:
             x2 = int(face["bbox"][2])
             y2 = int(face["bbox"][3])
             crop_img = img[y1:y2, x1:x2]
-
             # rasm koordinatalari shu yerda aniqlanadi
-            all_detect_faces.append([face.bbox, face.kps, crop_img.shape, img.shape])
+            all_detect_faces.append(
+                [face.bbox, face.kps, crop_img.shape, face.det_score]
+            )
 
         return all_detect_faces
 
