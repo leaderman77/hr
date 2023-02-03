@@ -19,7 +19,7 @@ class CameraProcessor:
     def __init__(self, config, option_list=["det"]):
         self.config = config
         self.option_list = option_list
-        self.app = FaceAnalysis(allowed_modules=["detection"])
+        self.app = FaceAnalysis(allowed_modules=["detection"], name="buffalo_sc")
         self.app.prepare(ctx_id=0, det_size=(640, 640), det_thresh=0.5)
         cam_path = config("CAMERA_PATH")
         if config("CAMERA_PATH") == "0":
@@ -36,12 +36,11 @@ class CameraProcessor:
             The extracted image.
         """
         ret, frame = self.cap.read()
-        # startX, startY = self.config("startX", cast=int), self.config(
-        #     "startY", cast=int
-        # )
-        # endX, endY = int(self.config("endX")), int(self.config("endX"))
-        # return frame[startY:endY, startX:endX]
-        return frame
+        startX, startY = self.config("startX", cast=int), self.config(
+            "startY", cast=int
+        )
+        endX, endY = int(self.config("endX")), int(self.config("endX"))
+        return frame[startY:endY, startX:endX]
 
     def get_diagonal(self, bbox):
         """
@@ -109,6 +108,7 @@ class CameraProcessor:
             diagonal = self.get_diagonal(face.bbox)
             if dioganal_min < diagonal < dioganal_max:
                 self.send_image(image)
+                break
 
     def process(self):
         """
@@ -121,19 +121,14 @@ class CameraProcessor:
         """
         while True:
             try:
-                # image = self.get_image()
-                _path = "../tests/embedding/2022-11-02 18_59_59.jpg"
-                image = cv2.imread(_path)
-                # faces = self.app.get(image)
-                # rimg = self.app.draw_on(image, faces)
+                image = self.get_image()
                 self.analyze_faces(image)
                 key = cv2.waitKey(1) & 0xFF
                 if key == ord("q"):
                     break
-                # cv2.imshow("frame", rimg)
 
             except Exception as ex:
-                print("xatolik ", ex)
+                print("xatolik_1", ex)
         cv2.destroyAllWindows()
 
 
@@ -143,4 +138,4 @@ while True:
     try:
         processor.process()
     except Exception as ex:
-        print("xatolik ", ex)
+        print("xatolik_0", ex)
