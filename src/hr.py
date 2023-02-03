@@ -12,11 +12,12 @@ class HR:
         det_size=(640, 640),
         det_thresh=0.3,
         option_list=["emb"],
+        name_model="buffalo_l",
     ):
         self.option_list = option_list
-        self.app = FaceAnalysis(allowed_modules=[module], name="buffalo_sc")
-        self.app.prepare(ctx_id=0, det_size=det_size, det_thresh=det_thresh)
         assets_dir = os.path.expanduser("~/.insightface/models/buffalo_l")
+        self.app = FaceAnalysis(allowed_modules=[module], name=name_model)
+        self.app.prepare(ctx_id=0, det_size=det_size, det_thresh=det_thresh)
         if "emb" in self.option_list:
             model_path = os.path.join(assets_dir, "w600k_r50.onnx")
             self.arcFace = ArcFaceONNX(model_path)

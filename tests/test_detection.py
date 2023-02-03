@@ -16,7 +16,7 @@ def test_det():
         - berilgan path bo'yicha barcha .jpg rasmlarni load qiladi
         - topilgan har bir yuz uchun yuz atrofida to'rtburchak chiziladi
     """
-    hr = HR()
+    hr = HR(name_model="buffalo_sc")
     imgs_path = os.path.join(
         PROJECT_DIR, "data", "drive", "rasmlar_kirish", "2022-11-02 18_59_59.jpg"
     )
@@ -25,7 +25,7 @@ def test_det():
         det_data = hr.detection(img)
 
         for data in det_data:
-            bbox, kps, _shape, img_shape = data
+            bbox, kps, shape, det_score = data
             x1 = int(bbox[0])
             y1 = int(bbox[1])
             x2 = int(bbox[2])
