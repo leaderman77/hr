@@ -191,15 +191,20 @@ class HR:
         # get faces
         faces = self.app.get(img)
 
+        if faces is None:
+            return None
+
         for face in faces:
             # get cropped img, adjusted kps
             crop_img, adjusted_kps = crop_face(img, face.kps, face.bbox)
 
-            # resize crop image to size 112x112 and adjust kps
-            resized_crop, resized_kps = resize_face(crop_img, adjusted_kps)
+            if crop_img is not None and adjusted_kps is not None:
+                # resize crop image to size 112x112 and adjust kps
+                resized_crop, resized_kps = resize_face(crop_img, adjusted_kps)
 
-            # set recalculated kps to face[i]
-            face.kps = resized_kps
+            if resized_kps is not None:
+                # set recalculated kps to face[i]
+                face.kps = resized_kps
 
             # generate the face embedding vector
             crop_embedding = self.arcFace.get(resized_crop, face)
@@ -213,17 +218,22 @@ class HR:
 
     def get_embedding_from_face_crop(self, crop, kps):
 
-        # resize crop to 112x112 and adjust kps
-        resized_crop, resized_kps = resize_face(crop, kps)
+        if kps is not None:
+            # resize crop to 112x112 and adjust kps
+            resized_crop, resized_kps = resize_face(crop, kps)
 
-        # set recalculated bbox/kps
-        face = {"kps": resized_kps}
+        if resized_kps is not None:
+            # crop image with Face_align
+            aligned_crop = face_align.norm_crop(
+                resized_crop, landmark=resized_kps, image_size=112
+            )
 
         # get embedding
-        embedding = self.arcFace.get(resized_crop, face)
+        embedding = self.arcFace.get_feat(aligned_crop).flatten()
 
+        # result
         face_data = [
-            face.kps,
+            resized_kps,
             embedding,
             resized_crop,
             resized_crop.shape,

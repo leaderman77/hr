@@ -11,7 +11,7 @@ def test_embedding_from_face_crop():
     To test to get face embeddings in 512-d numerical vectors obtained from
     cropped and then resized face:
         - loads 3 .jpg images according to the given path
-        - get faces, each face's bbox and kps
+        - via detection method get the list of face's bbox and kps
         - crop face and calculate kps according to this cropped img
         - resize cropped face img as well as crop kps
         - face embedding is obtained for each resized face on each image,
@@ -26,7 +26,7 @@ def test_embedding_from_face_crop():
     img2_path = os.path.join(root_emb_data, "1_1_1_2022-10-09-17-38-10.jpg")
     img3_path = os.path.join(root_emb_data, "2022-11-02 18_59_59.jpg")
 
-    # person A
+    #### person A
     img1 = cv2.imread(img1_path)
 
     # get face bbox and crop, kps from detection method
@@ -37,22 +37,20 @@ def test_embedding_from_face_crop():
 
     # get embedding
     feat_1_person = hr.get_embedding_from_face_crop(crop_img, adjusted_kps)
-    feat_1_person = feat_1_person[0][0]
+    feat_1_person = feat_1_person[1]
 
-    # person A
+    #### person A
     img2 = cv2.imread(img2_path)
 
     # get face bbox and crop, kps from detection method
     detection = hr.detection(img2)
 
     # get crop and kps from loc img
-    crop_img, adjusted_kps = crop_face(
-        detection[0][4], detection[0][1], detection[0][0]
-    )
+    crop_img, adjusted_kps = crop_face(img2, detection[0][1], detection[0][0])
 
     # get embedding
     feat_2_person = hr.get_embedding_from_face_crop(crop_img, adjusted_kps)
-    feat_2_person = feat_2_person[0][0]
+    feat_2_person = feat_2_person[1]
 
     # person B
     img3 = cv2.imread(img3_path)
@@ -61,13 +59,11 @@ def test_embedding_from_face_crop():
     detection = hr.detection(img3)
 
     # get crop and kps from loc img
-    crop_img, adjusted_kps = crop_face(
-        detection[0][4], detection[0][1], detection[0][0]
-    )
+    crop_img, adjusted_kps = crop_face(img3, detection[0][1], detection[0][0])
 
     # get embedding
     feat_3_person = hr.get_embedding_from_face_crop(crop_img, adjusted_kps)
-    feat_3_person = feat_3_person[0][0]
+    feat_3_person = feat_3_person[1]
 
     sim_same_crp = compute_sim(feat_1_person, feat_2_person)
     sim_diff_crp = compute_sim(feat_1_person, feat_3_person)
