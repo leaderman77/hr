@@ -28,7 +28,7 @@ def det():
         - berilgan path bo'yicha barcha .jpg rasmlarni load qiladi
         - topilgan har bir yuz uchun yuz atrofida to'rtburchak chiziladi
     """
-    hr = HR(det_thresh=0.5)
+    hr = HR(det_thresh=0.4)
     imgs_path = os.path.join(
         PROJECT_DIR,
         "data",
