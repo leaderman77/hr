@@ -13,14 +13,13 @@ CONFIG_DIR = os.path.join(os.path.dirname(__file__), "config")
 config = AutoConfig(search_path=CONFIG_DIR)
 
 from insightface.app import FaceAnalysis
-from hr import HR
 
 
 class CameraProcessor:
     def __init__(self, config, option_list=["det"]):
         self.config = config
         self.option_list = option_list
-        self.app = FaceAnalysis(allowed_modules=["detection"], name="buffalo_sc")
+        self.app = FaceAnalysis(allowed_modules=["detection"])
         self.app.prepare(ctx_id=0, det_size=(640, 640), det_thresh=0.5)
         cam_path = config("CAMERA_PATH")
         if config("CAMERA_PATH") == "0":
@@ -73,22 +72,20 @@ class CameraProcessor:
         """
         _, img_encoded = cv2.imencode(".jpg", image)
         api_url = self.config("TEST_URL")
-        headers = {"Content-Type": "multipart/form-data"}
+        headers = {
+            "accept": "application/json",
+            "Content-Type": "application/json",
+        }
+        json_data = {
+            "camera_id": int(self.config("CAMERA_ID")),
+            "image_encoded": str(base64.encodebytes(img_encoded), "utf-8"),
+            "key": self.config("MERCHANT_KEY"),
+            "location_id": int(self.config("LOCATION_ID")),
+            "merchant_id": int(self.config("MERCHANT_ID")),
+            "timestamp": f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}",
+        }
 
-        response = requests.post(
-            api_url,
-            data={
-                "merchant_id": int(self.config("MERCHANT_ID")),
-                "key": int(self.config("MERCHANT_KEY")),
-                "location_id": int(self.config("LOCATION_ID")),
-                "camera_id": int(self.config("CAMERA_ID")),
-                "timestamp": f"{datetime.datetime.now():%Y-%m-%d-%H:%M:%S}",
-                "img": open("../tests/embedding/2022-11-02 18_59_59.jpg", "rb"),
-                # "frame": str(base64.encodebytes(img_encoded), "utf-8"),
-            },
-            verify=False,
-        )
-
+        response = requests.post(api_url, headers=headers, json=json_data, verify=False)
         print(response.status_code)
         time.sleep(int(self.config("PER_SECOND")))
 
@@ -109,7 +106,6 @@ class CameraProcessor:
         faces = self.app.get(image)
 
         for face in faces:
-            print("face bor!")
             diagonal = self.get_diagonal(face.bbox)
             if dioganal_min < diagonal < dioganal_max:
                 self.send_image(image)
