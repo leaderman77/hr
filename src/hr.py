@@ -182,10 +182,10 @@ class HR:
             Input parameter. Image
         Returns
         -------
-        The method returns list of cropped img faces' bbox, kps, embeddings,
-        cropped img and its shape and input img's shape
+        list
+            the list of cropped img faces' bbox, kps, embeddings,
+            cropped img and its shape
         """
-
         face_embeddings = []
 
         # get faces
@@ -195,34 +195,41 @@ class HR:
             # get cropped img, adjusted kps
             crop_img, adjusted_kps = crop_face(img, face.kps, face.bbox)
 
-            # resize crop image and crop kps - w 112 h 112
+            # resize crop image to size 112x112 and adjust kps
             resized_crop, resized_kps = resize_face(crop_img, adjusted_kps)
 
-            # set recalculated bbox to face[i]
-            face["bbox"][0] = 0
-            face["bbox"][1] = 0
-            face["bbox"][2] = 112
-            face["bbox"][3] = 112
-
             # set recalculated kps to face[i]
-            face["kps"] = resized_kps
+            face.kps = resized_kps
 
             # generate the face embedding vector
             crop_embedding = self.arcFace.get(resized_crop, face)
 
             # return parameters
             face_embeddings.append(
-                [
-                    face.bbox,
-                    face.kps,
-                    crop_embedding,
-                    resized_crop,
-                    resized_crop.shape,
-                    img.shape,
-                ]
+                [crop_embedding, resized_crop, resized_crop.shape, resized_kps]
             )
 
         return face_embeddings
+
+    def get_embedding_from_face_crop(self, crop, kps):
+
+        # resize crop to 112x112 and adjust kps
+        resized_crop, resized_kps = resize_face(crop, kps)
+
+        # set recalculated bbox/kps
+        face = {"kps": resized_kps}
+
+        # get embedding
+        embedding = self.arcFace.get(resized_crop, face)
+
+        face_data = [
+            face.kps,
+            embedding,
+            resized_crop,
+            resized_crop.shape,
+        ]
+
+        return face_data
 
 
 # myHR = HR()

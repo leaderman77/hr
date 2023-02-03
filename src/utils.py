@@ -135,9 +135,11 @@ def resize_face(crop_img, crop_kps, target_size=(112, 112)):
 
     Returns
     -------
-    The method returns resized crop image & resized kps
+    img : Array
+        resized crop image
+    list: Array
+        resized kps
     """
-
     resized_crop = cv.resize(crop_img, target_size)
     ratio_x = target_size[0] / float(crop_img.shape[1])
     ratio_y = target_size[1] / float(crop_img.shape[0])
@@ -161,9 +163,11 @@ def crop_face(img, kps, bbox):
 
     Returns
     -------
-    The method returns cropped face image & adjusted kps
+    img : Array
+        cropped face image
+    list
+        the list of adjusted kps
     """
-
     x1 = int(bbox[0])
     y1 = int(bbox[1])
     x2 = int(bbox[2])

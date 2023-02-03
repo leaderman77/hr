@@ -1,12 +1,12 @@
 import cv2
 import os.path
 from hr import HR
-from utils import compute_sim, project_dir
+from utils import compute_sim, project_dir, crop_face
 
 PROJECT_DIR = project_dir()
 
 
-def test_resized_crop_embedding():
+def test_embedding_from_face_crop():
     """
     To test to get face embeddings in 512-d numerical vectors obtained from
     cropped and then resized face:
@@ -28,17 +28,45 @@ def test_resized_crop_embedding():
 
     # person A
     img1 = cv2.imread(img1_path)
-    feat_1_person = hr.get_embedding_by_crop_img(img1)
+
+    # get face bbox and crop, kps from detection method
+    detection = hr.detection(img1)
+
+    # get crop and kps from loc img
+    crop_img, adjusted_kps = crop_face(img1, detection[0][1], detection[0][0])
+
+    # get embedding
+    feat_1_person = hr.get_embedding_from_face_crop(crop_img, adjusted_kps)
     feat_1_person = feat_1_person[0][0]
 
     # person A
     img2 = cv2.imread(img2_path)
-    feat_2_person = hr.get_embedding_by_crop_img(img2)
+
+    # get face bbox and crop, kps from detection method
+    detection = hr.detection(img2)
+
+    # get crop and kps from loc img
+    crop_img, adjusted_kps = crop_face(
+        detection[0][4], detection[0][1], detection[0][0]
+    )
+
+    # get embedding
+    feat_2_person = hr.get_embedding_from_face_crop(crop_img, adjusted_kps)
     feat_2_person = feat_2_person[0][0]
 
     # person B
     img3 = cv2.imread(img3_path)
-    feat_3_person = hr.get_embedding_by_crop_img(img3)
+
+    # get face bbox and crop, kps from detection method
+    detection = hr.detection(img3)
+
+    # get crop and kps from loc img
+    crop_img, adjusted_kps = crop_face(
+        detection[0][4], detection[0][1], detection[0][0]
+    )
+
+    # get embedding
+    feat_3_person = hr.get_embedding_from_face_crop(crop_img, adjusted_kps)
     feat_3_person = feat_3_person[0][0]
 
     sim_same_crp = compute_sim(feat_1_person, feat_2_person)
