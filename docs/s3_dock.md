@@ -16,8 +16,6 @@
 | 2022-11-09    | 1            |
 | Jami camera_1 | 1195         |
 
-
-
 ### camera_2
 
 | Fayl nomi     | Rasmlar soni |
@@ -32,6 +30,7 @@
 | Jami camera_2 | 741          |
 
 ## [s3_v0.1.1(cleaned)](https://drive.google.com/drive/folders/18A2Ehy1_ZwvIdjRTQ-4alojpUGQOZ3OE)
+
 ### camera_1
 
 | Fayl nomi     | Rasmlar soni |
@@ -56,5 +55,3 @@
 | 2022-11-07    | 98           |
 | 2022-11-09    | 3            |
 | Jami camera_2 | 540          |
-### Detect rasmlar
-![2022-11-02 18_59_54_det.jpg](..%2Fdata%2Fs3_v0.1.2%2Fmerchant_1%2Flocation_1%2Fcamera_1%2F2022-11-02%2F2022-11-02%2018_59_54_det.jpg)
