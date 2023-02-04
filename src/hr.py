@@ -11,7 +11,7 @@ class HR:
         module="detection",
         det_size=(640, 640),
         det_thresh=0.3,
-        option_list=["emb"],
+        option_list=["det"],
         name_model="buffalo_l",
     ):
         self.option_list = option_list
