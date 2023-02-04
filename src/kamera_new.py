@@ -81,7 +81,7 @@ class CameraProcessor:
             "key": self.config("MERCHANT_KEY"),
             "location_id": int(self.config("LOCATION_ID")),
             "merchant_id": int(self.config("MERCHANT_ID")),
-            "timestamp": f"{datetime.datetime.now():%Y-%m-%d %H:%M:%S}",
+            "timestamp": f"{datetime.datetime.now():%Y-%m-%d-%H:%M:%S}",
         }
 
         response = requests.post(api_url, headers=headers, json=json_data, verify=False)
