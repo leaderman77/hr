@@ -57,9 +57,9 @@
 | Jami camera_2 | 540          |
 
 
-### Problemalar
+## Problemalar
 
-det_thresh=0.3
+### det_thresh=0.3
 
 | buffalo_l | buffalo_sc |
 |-----------|------------|
@@ -95,7 +95,7 @@ det_thresh=0.3
 
 
 
-det_thresh=0.4
+### det_thresh=0.4
 
 
 | buffalo_l | buffalo_sc |
