@@ -62,7 +62,7 @@ tests/test_embedding.py::test_embedding PASSED
 The branch name must match the project.
 For example, here: [link](https://github.com/orgs/cradle-uz/projects/2/views/1?layout=board)
 
-- If ``hr-#1 repo structuring'' is a task, branch as follows:
+- If `hr-#1 repo strukturalash` is a task, branch as follows:
 
    ```shell
    git checkout -b "hr-1-repo-structuring"
