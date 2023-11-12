@@ -9,8 +9,8 @@
     pre-commit install
     ```
 
-### Repo strukturasi
-Quyidagicha
+### Repo structure
+As follows
 
     ├── .gitignore
     ├── README.md
@@ -27,21 +27,21 @@ Quyidagicha
     ├── client-api # klientga oid kodlar
     └── data # rasmlar, videolar
 
-### Test qilish
+### Testing
 
-Proyekt asosiy (root) joyidan turib terminalda run qiling:
+From the root of the project, run it in a terminal:
 
 ```shell
 pytest -vv -p no:warnings
 ```
 
-Masalan:
+For instance:
 
 ```shell
 ~/work/cradle/git/hr$ pytest -vv -p no:warnings
 ```
 
-Quyidagiga o'xshash chiqish kerak
+You should get an output similar to the following
 
 ```shell
 ...
@@ -53,20 +53,20 @@ tests/test_embedding.py::test_embedding PASSED
 ```
 
 
-`pytest` `tests` folderiga borib kodlarni test qildi.
+`pytest` went to the `tests` folder and tested the codes.
 
-### data haqida: [link](data/DATA.md)
+### about data: [link](data/DATA.md)
 
-### PR ochish qoidasi
-- Biz main branchda ishlamaymiz. Hamma o'zi ishlaydigan branchni ochadi.
-Branch nomi proyektga mos bo'lishi kerak.
-Masalan, bu yerda: [link](https://github.com/orgs/cradle-uz/projects/2/views/1?layout=board)
+### PR opening rule
+- We do not work in the main branch. Everyone opens a branch that works for them.
+The branch name must match the project.
+For example, here: [link](https://github.com/orgs/cradle-uz/projects/2/views/1?layout=board)
 
-- `hr-#1 repo strukturalash` topshiriq bo'lsa, quyidagicha branch qilinadi:
+- If ``hr-#1 repo structuring'' is a task, branch as follows:
 
-  ```shell
-  git checkout -b "hr-1-repo-strukturalash"
-  ```
-- PR qilgan kishi albatta o'sha PRni tugatishga masul.
-- Python kodlar dokumentatsiyasi numpy-style da bo'lish kerak. Misol uchun [link](https://python.plainenglish.io/how-to-write-numpy-style-docstrings-a092121403ba)
-- commitga komment yozgada ham `"hr-1-komment"` qiling. Masalan: `git commit -m 'hr-1-komment'`
+   ```shell
+   git checkout -b "hr-1-repo-structuring"
+   ```
+- The person who made a PR is definitely responsible for finishing that PR.
+- Python code documentation should be in numpy-style. For example [link](https://python.plainenglish.io/how-to-write-numpy-style-docstrings-a092121403ba)
+- When writing a comment to the commit, make `"hr-1-comment"'. For example: `git commit -m 'hr-1-comment'`
